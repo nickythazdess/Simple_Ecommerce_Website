@@ -13,23 +13,29 @@ public class Product {
 
     @Id @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name="name")
     @Getter @Setter
     private String name;
 
-    @Column(name="brand")
+    @Column(name="developer")
     @Getter @Setter
-    private String brand;
+    private String dev;
 
     @Column(name="price")
     @Getter @Setter
     private float price;
 
-    @Column(name="category_id")
+    @ManyToOne
     @Getter @Setter
-    private long category_ID;
+    @JoinColumn(name="category_id", nullable=false)
+    private Category category_id;
+
+    /*@Column(name="category_id")
+    @Getter @Setter
+    private long category_ID;*/
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rid", referencedColumnName = "id")
@@ -38,4 +44,6 @@ public class Product {
     @Column(name="img")
     @Getter @Setter
     private String img_path;
+
+
 }

@@ -9,10 +9,12 @@ import javax.persistence.*;
 public class Rating {
     @Id @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-
     private long uID;
-    private long pID;
+
+    private long pid;
+
     private int rate;
 }
