@@ -10,9 +10,13 @@ public interface ProductService {
 
     Optional<Product> getProduct(Long id);
 
-    Product saveProduct(Product ca);
+    public Product getProductByName(String name);
+
+    public Product getProductByDev(String dev);
+
+    Product saveProduct(Product product);
 
     void deleteProduct(Long id);
 
-    void updateProduct(Product ca);
+    void updateProduct(Product product);
 }

@@ -1,5 +1,7 @@
 package com.example.ecommerce_website.entity;
 
+import com.example.ecommerce_website.dto.ProductDTO;
+import com.example.ecommerce_website.service.CategoryService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,43 +9,34 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity @Getter @Setter
 @Table(name = "Product")
 public class Product {
-
-    @Id @Getter
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
-    @Getter @Setter
+    @Column(name="name", unique = true)
     private String name;
 
     @Column(name="developer")
-    @Getter @Setter
     private String dev;
 
     @Column(name="price")
-    @Getter @Setter
     private float price;
 
-    @ManyToOne
-    @Getter @Setter
-    @JoinColumn(name="category_id", nullable=false)
-    private Category category_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category", nullable=false)
+    private Category category;
 
     /*@Column(name="category_id")
     @Getter @Setter
     private long category_ID;*/
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rid", referencedColumnName = "id")
-    private List<Rating> ratingList = new ArrayList<>();
+    //@OneToMany(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "rid", referencedColumnName = "id")
+    //private List<Rating> ratingList = new ArrayList<>();
 
     @Column(name="img")
-    @Getter @Setter
-    private String img_path;
-
-
+    private String img;
 }

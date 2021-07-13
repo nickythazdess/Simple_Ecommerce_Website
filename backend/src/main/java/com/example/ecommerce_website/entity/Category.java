@@ -14,10 +14,10 @@ public class Category {
     @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name="name", unique = true)
     @Getter @Setter
     private String name;
 
-    @OneToMany(mappedBy="category_id")
+    @OneToMany(mappedBy="category")
     private Set<Product> products;
 }

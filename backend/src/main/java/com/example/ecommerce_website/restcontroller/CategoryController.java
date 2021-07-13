@@ -45,6 +45,15 @@ public class CategoryController {
         return new ResponseEntity<>(ca.get(), HttpStatus.OK);
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Category> findCategoryByName(@PathVariable String name) {
+        Category ca = categoryService.getCategoryByName(name);
+        if (ca == null) {
+            throw new CategoryNotFoundException(name);
+        }
+        return new ResponseEntity<>(ca, HttpStatus.OK);
+    }
+
     @PostMapping()
     public Category saveCategory(@Valid @RequestBody Category ca) { return categoryService.saveCategory(ca); }
 

@@ -20,9 +20,13 @@ public class ProductServiceImpl implements ProductService {
 
     public Optional<Product> getProduct(Long id) { return repo.findById(id); }
 
-    public Product saveProduct(Product ca) { return repo.save(ca); }
+    public Product getProductByName(String name) { return repo.findProductByName(name); }
+
+    public Product getProductByDev(String dev) { return repo.findProductByDev(dev); }
+
+    public Product saveProduct(Product product) { return repo.save(product); }
 
     public void deleteProduct(Long id) { repo.delete(getProduct(id).get()); }
 
-    public void updateProduct(Product ca) { repo.save(ca); }
+    public void updateProduct(Product product) { repo.save(product); }
 }

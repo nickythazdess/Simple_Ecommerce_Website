@@ -20,6 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Optional<Category> getCategory(Long id) { return repo.findById(id); }
 
+    public Category getCategoryByName(String name) { return repo.findCategoryByName(name); }
+
     public Category saveCategory(Category ca) { return repo.save(ca); }
 
     public void deleteCategory(Long id) { repo.delete(getCategory(id).get()); }
