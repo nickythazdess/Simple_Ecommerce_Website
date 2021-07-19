@@ -11,15 +11,10 @@ import java.time.LocalDate;
 @Getter @Setter
 public class RatingDTO {
     private Long uid;
-
     private Long pid;
-
     private int rate;
-
     private String cmt;
-
     private LocalDate date;
-
     public RatingDTO() {}
 
     public RatingDTO(Long uid, Long pid, int rate, String cmt, LocalDate date) {

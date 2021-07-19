@@ -6,15 +6,10 @@ import lombok.Setter;
 @Getter @Setter
 public class AccountDTO {
     private Long id;
-
     private String name;
-
     private String username;
-
     private String email;
-
     private String password;
-
     public AccountDTO() {}
 
     public AccountDTO(Long id, String username, String name, String email, String password) {

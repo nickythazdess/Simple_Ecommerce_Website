@@ -1,6 +1,5 @@
 package com.example.ecommerce_website.entity;
 
-import com.example.ecommerce_website.security.services.UserDetailsImpl;
 import lombok.Getter;
 import lombok.Setter;
 

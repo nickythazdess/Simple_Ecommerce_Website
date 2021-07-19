@@ -2,7 +2,7 @@ package com.example.ecommerce_website.configuration;
 
 import com.example.ecommerce_website.security.jwt.AuthEntryPointJwt;
 import com.example.ecommerce_website.security.jwt.AuthTokenFilter;
-import com.example.ecommerce_website.security.services.UserDetailsServiceImpl;
+import com.example.ecommerce_website.service.impl.UserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity @Getter @Setter
 @Table(name = "Product")
@@ -25,18 +26,22 @@ public class Product {
     @JoinColumn(name="category", nullable=false)
     private Category category;
 
-    @Column(name="img")
-    private String img;
+    @OneToOne
+    @JoinColumn(name = "image")
+    private Image img;
 
-    //@Column(name = "createdIn")
-    //private String created_in;
+    /*@Column(name = "created_in")
+    private LocalDateTime createdIn;
 
-    //@Column(name = "updatedIn")
-    //private String updated_in;
+    @Column(name = "updated_in")
+    private LocalDateTime updatedIn;
+
+    @Column(name = "description")
+    private String description;*/
 
     public Product() {}
 
-    public Product(Long id, String name, String dev, float price, String img) {
+    public Product(Long id, String name, String dev, float price, Image img) {
         this.id = id;
         this.name = name;
         this.dev = dev;

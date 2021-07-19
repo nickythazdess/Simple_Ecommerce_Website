@@ -1,6 +1,6 @@
 package com.example.ecommerce_website.security.jwt;
 
-import com.example.ecommerce_website.security.services.UserDetailsServiceImpl;
+import com.example.ecommerce_website.service.impl.UserDetailsServiceImpl;
 
 import java.io.IOException;
 

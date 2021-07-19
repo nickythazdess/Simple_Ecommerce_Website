@@ -1,6 +1,6 @@
 package com.example.ecommerce_website.security.jwt;
 
-import com.example.ecommerce_website.security.services.UserDetailsImpl;
+import com.example.ecommerce_website.service.impl.UserDetailsImpl;
 
 import java.util.Date;
 
