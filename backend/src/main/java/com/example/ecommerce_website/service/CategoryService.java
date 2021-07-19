@@ -1,7 +1,10 @@
 package com.example.ecommerce_website.service;
 
+import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.entity.Category;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,5 +19,13 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    void updateCategory(Category ca);
+    Category updateCategory(Category ca);
+
+    Boolean exist(String name);
+
+    CategoryDTO convertToDto(Category cate);
+
+    List<CategoryDTO> convertToDtoList(List<Category> cateList);
+
+    Category convertToEntity(CategoryDTO categoryDTO) throws ParseException;
 }

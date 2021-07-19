@@ -4,9 +4,12 @@ import com.example.ecommerce_website.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    public Product findProductByName(String name);
-    public Product findProductByDev(String dev);
-    //public Product findProductByCategory_id(Category category_id);
+    Product findProductByName(String name);
+    Product findProductByDev(String dev);
+    Boolean existsByName(String name);
+    List<Product> findAllByCategory_name(String category_name);
 }

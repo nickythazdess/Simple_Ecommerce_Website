@@ -16,4 +16,16 @@ public class ProductDTO {
     private String category_name;
 
     private String img;
+
+    public ProductDTO() {}
+
+    public ProductDTO(Long id, String name, String dev, float price, String category_name, String img) {
+        this.id = id;
+        this.name = name;
+        this.dev = dev;
+        this.price = price;
+        this.category_name = category_name;
+        this.img = img;
+
+    }
 }

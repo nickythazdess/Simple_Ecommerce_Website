@@ -4,39 +4,52 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "Account")
+@Entity @Getter @Setter
+@Table(	name = "account",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class Account {
-    public enum account_role {
-        ADMIN,
-        USER;
-    }
-
-    @Id @Getter
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
-    @Getter @Setter
+    @Size(max = 100)
     private String name;
 
-    @Column(name="username", unique = true)
-    @Getter @Setter
+    @NotBlank
+    @Size(min = 3, max = 100)
     private String username;
 
-    @Column(name="password")
-    @Getter @Setter
-    private String password;
-
-    @Column(name="email", unique = true, nullable = true)
-    @Getter @Setter
+    @NotBlank
+    @Size(max = 100)
+    @Email
     private String email;
 
-    @Column(name="role")
-    @Getter @Setter
-    private account_role role;
+    @NotBlank
+    @Size(min = 6, max = 100)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "uid"),
+            inverseJoinColumns = @JoinColumn(name = "rid"))
+    private Set<Role> roles = new HashSet<>();
+
+    public Account() {
+    }
+
+    public Account(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
+

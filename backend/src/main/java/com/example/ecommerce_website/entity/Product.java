@@ -1,13 +1,9 @@
 package com.example.ecommerce_website.entity;
 
-import com.example.ecommerce_website.dto.ProductDTO;
-import com.example.ecommerce_website.service.CategoryService;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity @Getter @Setter
 @Table(name = "Product")
@@ -25,18 +21,26 @@ public class Product {
     @Column(name="price")
     private float price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="category", nullable=false)
     private Category category;
 
-    /*@Column(name="category_id")
-    @Getter @Setter
-    private long category_ID;*/
-
-    //@OneToMany(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "rid", referencedColumnName = "id")
-    //private List<Rating> ratingList = new ArrayList<>();
-
     @Column(name="img")
     private String img;
+
+    //@Column(name = "createdIn")
+    //private String created_in;
+
+    //@Column(name = "updatedIn")
+    //private String updated_in;
+
+    public Product() {}
+
+    public Product(Long id, String name, String dev, float price, String img) {
+        this.id = id;
+        this.name = name;
+        this.dev = dev;
+        this.price = price;
+        this.img = img;
+    }
 }

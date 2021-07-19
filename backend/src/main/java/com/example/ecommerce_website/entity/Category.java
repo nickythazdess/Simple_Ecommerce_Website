@@ -6,18 +6,24 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+@Entity @Getter @Setter
 @Table(name = "Category")
 public class Category {
-    @Id @Getter
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name="name", unique = true)
-    @Getter @Setter
     private String name;
 
     @OneToMany(mappedBy="category")
     private Set<Product> products;
+
+    public Category() {}
+
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

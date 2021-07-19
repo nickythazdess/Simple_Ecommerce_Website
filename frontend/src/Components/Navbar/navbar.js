@@ -2,9 +2,9 @@ import './navbar.css';
 import React from 'react';
 
 export default class NavBar extends React.Component {
-    state = {
+    /*state = {
         username: 'Tan',
-    }
+    }*/
 
     render() {
         return (
@@ -16,7 +16,7 @@ export default class NavBar extends React.Component {
                 </ul>
 
                 <div className="nav-details">
-                <p className="nav-username"> {this.state.username} </p>
+                <p className="nav-username"> {this.props.username} </p>
                 </div>
             </nav>
         );

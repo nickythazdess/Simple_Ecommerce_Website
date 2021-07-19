@@ -1,8 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-import React, {useState} from 'react';
-import HomePage from './Page/HomePage'
-import NavBar from './Component/NavBar'
+import React from 'react';
+import HomePage from "./Page/HomePage/homepage"
+import NavBar from "./Components/NavBar/navbar"
+import Contact from "./Components/Contact/contact"
+import {Route, BrowserRouter, Switch} from "react-router-dom"
 
 class App extends React.Component {
   state = {
@@ -20,12 +21,20 @@ class App extends React.Component {
   render () {
     
     return (
-      <div className="App">
+      <BrowserRouter>
+      <div>
         <NavBar name={this.state.name}/>
-        <HomePage name={this.state.name} bootcamp={this.state.bootcamp}/>
-
         <button onClick={() => this.updateName("New name")}>UpdateName</button>
+        <Switch>
+          <Route exact path="/home">
+            <HomePage name={this.state.name} bootcamp={this.state.bootcamp}/>
+          </Route>
+          <Route exact path="/contact">
+            <Contact></Contact>
+          </Route>
+        </Switch>
       </div>
+    </BrowserRouter>
     );
   }
 }
