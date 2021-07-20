@@ -1,7 +1,7 @@
 package com.example.ecommerce_website.configuration;
 
-import com.example.ecommerce_website.security.jwt.AuthEntryPointJwt;
-import com.example.ecommerce_website.security.jwt.AuthTokenFilter;
+import com.example.ecommerce_website.jwt.AuthEntryPointJwt;
+import com.example.ecommerce_website.jwt.AuthTokenFilter;
 import com.example.ecommerce_website.service.impl.UserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/api/*/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/*/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/api/*/test/**").hasRole("ADMIN")
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

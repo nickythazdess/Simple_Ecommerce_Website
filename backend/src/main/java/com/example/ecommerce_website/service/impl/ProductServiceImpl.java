@@ -47,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO convertToDto(Product product){
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setCategory_name(product.getCategory().getName());
+        productDTO.setImg_id(product.getImg().getId());
         return productDTO;
     }
 

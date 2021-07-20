@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity @Getter @Setter
 @Table(name = "Product")
@@ -26,26 +26,28 @@ public class Product {
     @JoinColumn(name="category", nullable=false)
     private Category category;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "image")
     private Image img;
 
-    /*@Column(name = "created_in")
-    private LocalDateTime createdIn;
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 
-    @Column(name = "updated_in")
-    private LocalDateTime updatedIn;
+    @Column(name = "updated_date")
+    private LocalDate updatedDate;
 
     @Column(name = "description")
-    private String description;*/
+    private String description;
 
     public Product() {}
 
-    public Product(Long id, String name, String dev, float price, Image img) {
-        this.id = id;
+    public Product(String name, String dev, float price, Image img, String description, LocalDate createdDate, LocalDate updatedDate) {
         this.name = name;
         this.dev = dev;
         this.price = price;
         this.img = img;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 }

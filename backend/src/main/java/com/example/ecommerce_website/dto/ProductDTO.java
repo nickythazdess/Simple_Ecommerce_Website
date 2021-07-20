@@ -3,6 +3,8 @@ package com.example.ecommerce_website.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter @Setter
 public class ProductDTO {
     private Long id;
@@ -10,16 +12,21 @@ public class ProductDTO {
     private String dev;
     private float price;
     private String category_name;
-    private String img;
+    private String img_id;
+    private String description;
+    private LocalDate createdDate;
+    private LocalDate updatedDate;
     public ProductDTO() {}
 
-    public ProductDTO(Long id, String name, String dev, float price, String category_name, String img) {
+    public ProductDTO(Long id, String name, String dev, float price, String category_name, String img_id, String description, LocalDate createdDate, LocalDate updatedDate) {
         this.id = id;
         this.name = name;
         this.dev = dev;
         this.price = price;
         this.category_name = category_name;
-        this.img = img;
-
+        this.img_id = img_id;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 }

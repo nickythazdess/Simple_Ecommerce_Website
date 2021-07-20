@@ -9,7 +9,6 @@ import com.example.ecommerce_website.service.impl.UserDetailsServiceImpl;
 import com.example.ecommerce_website.service.ProductService;
 import com.example.ecommerce_website.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +28,12 @@ public class RatingController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public List<RatingDTO> getRatingList(){
         return ratingService.convertToDtoList(ratingService.getRatingList());
     }
 
-    @GetMapping("/user/{uid}")
+    @GetMapping("/admin/user/{uid}")
     public List<RatingDTO> getUserRatings(@PathVariable Long uid){
         return ratingService.convertToDtoList(ratingService.getUserRating(uid));
     }
@@ -45,15 +44,13 @@ public class RatingController {
         else return ratingService.convertToDtoList(ratingService.getProductRating(pid));
     }
 
-    @GetMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @GetMapping("/user")
     public RatingDTO getProductRatingOfUSer(@RequestParam(name="uid") Long uid, @RequestParam(name="pid") Long pid){
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
         return ratingService.convertToDto(ratingService.getProductRatingOfUser(uid, pid));
     }
 
-    @PostMapping()
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/user")
     public Rating createRating(@RequestBody RatingDTO ratingDTO) throws ParseException {
         Optional<Product> product = productService.getProduct(ratingDTO.getPid());
         if (product.isEmpty())

@@ -1,4 +1,4 @@
-package com.example.ecommerce_website.security.jwt;
+package com.example.ecommerce_website.jwt;
 
 import java.io.IOException;
 

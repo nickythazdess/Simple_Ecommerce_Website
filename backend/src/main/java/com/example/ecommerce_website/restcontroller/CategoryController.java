@@ -8,7 +8,6 @@ import com.example.ecommerce_website.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,22 +22,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    /*@GetMapping()
-    public List<Category> findAll() {
-        return categoryService.getCategoryList();
-    }*/
-
     @GetMapping()
     public ResponseEntity<List<CategoryDTO>> getAll() {
         return new ResponseEntity<>(categoryService.convertToDtoList(categoryService.getCategoryList()), HttpStatus.OK);
     }
-
-    /*@GetMapping("/{id}")
-    public Category findCategory(@PathVariable Long id) {
-        Category ca = categoryService.getCategory(id);
-        if (ca != null) return ca;
-        else throw new CategoryNotFoundException(id);
-    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
@@ -58,8 +45,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.convertToDto(ca), HttpStatus.OK);
     }
 
-    @PostMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/admin")
     public CategoryDTO createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws ParseException {
         if (categoryService.exist(categoryDTO.getName()))
             throw new CategoryExistedException(categoryDTO.getName());
@@ -67,16 +53,14 @@ public class CategoryController {
         return categoryDTO;
     }
 
-    @PutMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/admin")
     public CategoryDTO updateCategory(@Valid @RequestBody(required = true) CategoryDTO categoryUpdate) throws ParseException {
         Category category = categoryService.convertToEntity(categoryUpdate);
         categoryService.updateCategory(category);
         return categoryUpdate;
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/admin/{id}")
     public HashMap<String, String> deleteCategory(@PathVariable Long id) {
         Optional<Category> ca = categoryService.getCategory(id);
         if (!ca.isPresent()) {

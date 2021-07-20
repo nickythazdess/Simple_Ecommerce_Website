@@ -6,15 +6,17 @@ import lombok.Setter;
 @Getter @Setter
 public class ImageDTO {
     private String id;
-    private String url;
+    private String data;
+    private String name;
     private String contentType;
     private Long size;
     public ImageDTO() {}
 
-    public ImageDTO(String id, String url, String contentType, Long size) {
+    public ImageDTO(String id, String data, String name, String contentType, Long size) {
         this.id = id;
+        this.name = name;
         this.contentType = contentType;
-        this.url = url;
+        this.data = data;
         this.size = size;
     }
 }

@@ -11,7 +11,7 @@ import com.example.ecommerce_website.payload.response.JwtResponse;
 import com.example.ecommerce_website.payload.response.MessageResponse;
 import com.example.ecommerce_website.repository.AccountRepository;
 import com.example.ecommerce_website.repository.RoleRepository;
-import com.example.ecommerce_website.security.jwt.JwtUtils;
+import com.example.ecommerce_website.jwt.JwtUtils;
 import com.example.ecommerce_website.service.impl.UserDetailsImpl;
 
 import java.util.HashSet;
