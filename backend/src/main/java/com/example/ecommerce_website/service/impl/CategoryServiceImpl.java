@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.service.impl;
 
+import com.example.ecommerce_website.displayDTO.CategoryDisplay;
 import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.repository.CategoryRepository;
@@ -53,5 +54,18 @@ public class CategoryServiceImpl implements CategoryService {
     public Category convertToEntity(CategoryDTO categoryDTO) throws ParseException {
         Category cate = modelMapper.map(categoryDTO, Category.class);
         return cate;
+    }
+
+    public CategoryDisplay convertToDisplay(CategoryDTO dto){
+        CategoryDisplay categoryDisplay = modelMapper.map(dto, CategoryDisplay.class);
+        return categoryDisplay;
+    }
+
+    public List<CategoryDisplay> convertToDisplayList(List<CategoryDTO> dtoList){
+        List<CategoryDisplay> displayList = new ArrayList<>();
+        for (CategoryDTO dto : dtoList) {
+            displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
     }
 }

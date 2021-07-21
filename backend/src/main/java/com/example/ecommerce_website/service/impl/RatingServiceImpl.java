@@ -1,5 +1,8 @@
 package com.example.ecommerce_website.service.impl;
 
+import com.example.ecommerce_website.displayDTO.ProductDisplay;
+import com.example.ecommerce_website.displayDTO.RatingDisplay;
+import com.example.ecommerce_website.dto.ProductDTO;
 import com.example.ecommerce_website.dto.RatingDTO;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.RatingID;
@@ -59,5 +62,18 @@ public class RatingServiceImpl implements RatingService {
         Rating rating = modelMapper.map(ratingDTO, Rating.class);
         rating.setId(new RatingID(ratingDTO.getUid(), ratingDTO.getPid()));
         return rating;
+    }
+
+    public RatingDisplay convertToDisplay(RatingDTO dto){
+        RatingDisplay ratingDisplay = modelMapper.map(dto, RatingDisplay.class);
+        return ratingDisplay;
+    }
+
+    public List<RatingDisplay> convertToDisplayList(List<RatingDTO> dtoList){
+        List<RatingDisplay> displayList = new ArrayList<>();
+        for (RatingDTO dto : dtoList) {
+            displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
     }
 }

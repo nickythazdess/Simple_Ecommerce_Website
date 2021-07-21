@@ -44,6 +44,12 @@ public class RatingController {
         else return ratingService.convertToDtoList(ratingService.getProductRating(pid));
     }
 
+    @GetMapping("/avg/product/{pid}")
+    public List<RatingDTO> getProductAverageRating(@PathVariable Long pid){
+        if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
+        else return ratingService.convertToDtoList(ratingService.getProductRating(pid));
+    }
+
     @GetMapping("/user")
     public RatingDTO getProductRatingOfUSer(@RequestParam(name="uid") Long uid, @RequestParam(name="pid") Long pid){
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);

@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity @Getter @Setter
 @Table(name = "image")
@@ -28,6 +29,9 @@ public class Image {
 
     @Column(name = "size")
     private Long size;
+
+    @OneToOne(mappedBy="img")
+    private Product product;
 
     public Image() {}
 

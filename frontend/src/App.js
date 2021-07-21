@@ -22,19 +22,23 @@ class App extends React.Component {
     
     return (
       <BrowserRouter>
-      <div>
-        <NavBar name={this.state.name}/>
-        <button onClick={() => this.updateName("New name")}>UpdateName</button>
-        <Switch>
-          <Route exact path="/home">
-            <HomePage name={this.state.name} bootcamp={this.state.bootcamp}/>
-          </Route>
-          <Route exact path="/contact">
-            <Contact></Contact>
-          </Route>
-        </Switch>
-      </div>
-    </BrowserRouter>
+        <div className="root">
+          <NavBar/>
+          <SuperHeroBanner/>
+          <SideBar/>
+
+          <Switch>
+            <Route exact path="/home">
+              <HomePage name={this.state.name} bootcamp={this.state.bootcamp}/>
+            </Route>
+            <Route exact path="/contact">
+              <Contact></Contact>
+            </Route>
+          </Switch>
+
+          <Footer></Footer>/
+        </div>
+      </BrowserRouter>
     );
   }
 }

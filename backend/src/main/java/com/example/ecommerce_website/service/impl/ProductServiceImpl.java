@@ -1,5 +1,8 @@
 package com.example.ecommerce_website.service.impl;
 
+import com.example.ecommerce_website.displayDTO.ImageDisplay;
+import com.example.ecommerce_website.displayDTO.ProductDisplay;
+import com.example.ecommerce_website.dto.ImageDTO;
 import com.example.ecommerce_website.dto.ProductDTO;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
@@ -47,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO convertToDto(Product product){
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setCategory_name(product.getCategory().getName());
-        productDTO.setImg_id(product.getImg().getId());
+        productDTO.setImg_id(product.getImg());
         return productDTO;
     }
 
@@ -66,5 +69,18 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryService.getCategoryByName(productDTO.getCategory_name());
         product.setCategory(category);
         return product;
+    }
+
+    public ProductDisplay convertToDisplay(ProductDTO dto){
+        ProductDisplay productDisplay = modelMapper.map(dto, ProductDisplay.class);
+        return productDisplay;
+    }
+
+    public List<ProductDisplay> convertToDisplayList(List<ProductDTO> dtoList){
+        List<ProductDisplay> displayList = new ArrayList<>();
+        for (ProductDTO dto : dtoList) {
+            displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
     }
 }

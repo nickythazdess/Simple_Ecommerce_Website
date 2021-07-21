@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.service.impl;
 
+import com.example.ecommerce_website.displayDTO.AccountDisplay;
 import com.example.ecommerce_website.dto.AccountDTO;
 import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.entity.Account;
@@ -51,5 +52,18 @@ public class AccountServiceImpl implements AccountService {
     public Account convertToEntity(AccountDTO accountDTO) throws ParseException {
         Account acc = modelMapper.map(accountDTO, Account.class);
         return acc;
+    }
+
+    public AccountDisplay convertToDisplay(AccountDTO dto){
+        AccountDisplay accountDisplay = modelMapper.map(dto, AccountDisplay.class);
+        return accountDisplay;
+    }
+
+    public List<AccountDisplay> convertToDisplayList(List<AccountDTO> dtoList){
+        List<AccountDisplay> displayList = new ArrayList<>();
+        for (AccountDTO dto : dtoList) {
+            displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
     }
 }

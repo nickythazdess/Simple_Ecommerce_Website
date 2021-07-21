@@ -1,5 +1,8 @@
 package com.example.ecommerce_website.service.impl;
 
+import com.example.ecommerce_website.displayDTO.CategoryDisplay;
+import com.example.ecommerce_website.displayDTO.ImageDisplay;
+import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.dto.ImageDTO;
 import com.example.ecommerce_website.entity.Image;
 import com.example.ecommerce_website.entity.Product;
@@ -73,5 +76,18 @@ public class ImageServiceImpl implements ImageService {
     public Image convertToEntity(ImageDTO imgDTO) throws ParseException {
         Image img = modelMapper.map(imgDTO, Image.class);
         return img;
+    }
+
+    public ImageDisplay convertToDisplay(ImageDTO dto){
+        ImageDisplay imageDisplay = modelMapper.map(dto, ImageDisplay.class);
+        return imageDisplay;
+    }
+
+    public List<ImageDisplay> convertToDisplayList(List<ImageDTO> dtoList){
+        List<ImageDisplay> displayList = new ArrayList<>();
+        for (ImageDTO dto : dtoList) {
+            displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
     }
 }

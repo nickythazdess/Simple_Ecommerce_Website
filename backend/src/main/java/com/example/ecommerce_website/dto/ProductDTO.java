@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.dto;
 
+import com.example.ecommerce_website.entity.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,13 +13,13 @@ public class ProductDTO {
     private String dev;
     private float price;
     private String category_name;
-    private String img_id;
+    private Image img_id;
     private String description;
     private LocalDate createdDate;
     private LocalDate updatedDate;
     public ProductDTO() {}
 
-    public ProductDTO(Long id, String name, String dev, float price, String category_name, String img_id, String description, LocalDate createdDate, LocalDate updatedDate) {
+    public ProductDTO(Long id, String name, String dev, float price, String category_name, Image img_id, String description, LocalDate createdDate, LocalDate updatedDate) {
         this.id = id;
         this.name = name;
         this.dev = dev;
