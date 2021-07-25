@@ -36,9 +36,14 @@ export default class HomePage extends React.Component {
 
     render () {
         return (
-            <div> 
-                Welcome to {this.props.bootcamp}, {this.props.name}. It is {this.state.time}
-                <button onClick={this.clickGame}> Clicky Game</button>
+            <div className="homepage">
+                {/*
+                <SuperHeroBanner/>
+                <div className="content">
+                    <SideBar/>
+                    <Store/>
+                </div>*/
+                }
             </div>
         );
     }

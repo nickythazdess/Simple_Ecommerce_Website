@@ -25,35 +25,35 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping("/public")
-    public ResponseEntity<List<AccountDTO>> getAll(){
-        return new ResponseEntity<>(accountService.convertToDtoList(accountService.getAccountList()), HttpStatus.OK);
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok().body(accountService.convertToDtoList(accountService.getAccountList()));
     }
 
     @GetMapping("/admin/{uid}")
-    public AccountDTO getUser(@PathVariable Long uid){
+    public ResponseEntity<?> getUser(@PathVariable Long uid){
         Optional<Account> acc = accountService.getAccount(uid);
         if (!acc.isPresent()) throw new AccountNotFoundException(uid);
-        return accountService.convertToDto(acc.get());
+        return ResponseEntity.ok().body(accountService.convertToDto(acc.get()));
     }
 
     @GetMapping("/admin/name/{name}")
-    public List<AccountDTO> getUsersByName(@PathVariable String name){
-        List<Account> acc = accountService.getUserByName(name);
-        if (acc.isEmpty()) throw new AccountNotFoundException(name);
-        return accountService.convertToDtoList(acc);
+    public ResponseEntity<?> getUsersByName(@PathVariable String name){
+        List<Account> accList = accountService.getUserByName(name);
+        if (accList.isEmpty()) throw new AccountNotFoundException(name);
+        return ResponseEntity.ok().body(accountService.convertToDtoList(accList));
     }
 
     @GetMapping("/admin/email/{email}")
-    public AccountDTO getUserByEmail(@PathVariable String email){
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email){
         Optional<Account> acc = accountService.getUserByEmail(email);
         if (!acc.isPresent()) throw new EmailNotFoundException(email);
-        return accountService.convertToDto(acc.get());
+        return ResponseEntity.ok().body(accountService.convertToDto(acc.get()));
     }
 
     @GetMapping("/admin/username/{username}")
-    public AccountDTO getUserByUsername(@PathVariable String username){
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
         Optional<Account> acc = accountService.getUserByUsername(username);
         if (!acc.isPresent()) throw new UsernameNotFoundException(username);
-        return accountService.convertToDto(acc.get());
+        return ResponseEntity.ok().body(accountService.convertToDto(acc.get()));
     }
 }

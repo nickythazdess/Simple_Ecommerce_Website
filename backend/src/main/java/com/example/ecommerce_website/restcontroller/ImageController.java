@@ -25,13 +25,13 @@ public class ImageController {
     private ImageService imageService;
 
     @GetMapping("/admin")
-    public ResponseEntity<List<ImageDTO>> getAll() {
+    public ResponseEntity<?> getAll() {
         List<ImageDTO> dtoList = imageService.convertToDtoList(imageService.getImageList());
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     @GetMapping("/{image_id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String image_id) {
+    public ResponseEntity<?> getImage(@PathVariable String image_id) {
         try {
             Optional<Image> img = imageService.getImageById(image_id);
             if (!img.isPresent()) throw new ImageNotFoundException();
@@ -48,7 +48,7 @@ public class ImageController {
     }
 
     @GetMapping("/product/{pid}")
-    public ResponseEntity<String> getImageOfProduct(@PathVariable Long pid) {
+    public ResponseEntity<?> getImageOfProduct(@PathVariable Long pid) {
         Optional<Image> img = imageService.getImageOfProduct(pid);
         if (!img.isPresent()) throw new ImageNotFoundException();
         Image image = img.get();
@@ -59,7 +59,7 @@ public class ImageController {
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("name") String fileName) {
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("name") String fileName) {
         try {
             Image image = new Image(Base64.getEncoder().encodeToString(file.getBytes()), fileName, file.getContentType(), file.getSize());
             imageService.saveImage(image);

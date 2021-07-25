@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import './contact.css'
+import './help.css'
 
-export default class Contact extends React.Component {
+export default class Help extends React.Component {
     state = {
         userList: [],
     }

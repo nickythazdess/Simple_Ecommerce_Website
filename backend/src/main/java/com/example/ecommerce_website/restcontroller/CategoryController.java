@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
@@ -23,52 +24,50 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping()
-    public ResponseEntity<List<CategoryDTO>> getAll() {
-        return new ResponseEntity<>(categoryService.convertToDtoList(categoryService.getCategoryList()), HttpStatus.OK);
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(categoryService.convertToDtoList(categoryService.getCategoryList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCategory(@PathVariable Long id) {
+    public ResponseEntity<?> getCategory(@PathVariable Long id) {
         Optional<Category> ca = categoryService.getCategory(id);
         if (!ca.isPresent()) {
             throw new CategoryNotFoundException(id);
         }
-        return new ResponseEntity<>(categoryService.convertToDto(ca.get()), HttpStatus.OK);
+        return ResponseEntity.ok().body(categoryService.convertToDto(ca.get()));
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
+    public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
         Category ca = categoryService.getCategoryByName(name);
         if (ca == null) {
             throw new CategoryNotFoundException(name);
         }
-        return new ResponseEntity<>(categoryService.convertToDto(ca), HttpStatus.OK);
+        return ResponseEntity.ok().body(categoryService.convertToDto(ca));
     }
 
     @PostMapping("/admin")
-    public CategoryDTO createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws ParseException {
+    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws ParseException {
         if (categoryService.exist(categoryDTO.getName()))
             throw new CategoryExistedException(categoryDTO.getName());
         categoryService.saveCategory(categoryService.convertToEntity(categoryDTO));
-        return categoryDTO;
+        return ResponseEntity.ok().body(categoryDTO);
     }
 
     @PutMapping("/admin")
-    public CategoryDTO updateCategory(@Valid @RequestBody(required = true) CategoryDTO categoryUpdate) throws ParseException {
+    public ResponseEntity<?> updateCategory(@Valid @RequestBody(required = true) CategoryDTO categoryUpdate) throws ParseException {
         Category category = categoryService.convertToEntity(categoryUpdate);
         categoryService.updateCategory(category);
-        return categoryUpdate;
+        return ResponseEntity.ok().body("Update successfully!");
     }
 
     @DeleteMapping("/admin/{id}")
-    public HashMap<String, String> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         Optional<Category> ca = categoryService.getCategory(id);
         if (!ca.isPresent()) {
             throw new CategoryNotFoundException(id);
         }
         categoryService.deleteCategory(id);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("message", "Delete successfully!");
-        return map;
+        return ResponseEntity.ok().body("Delete successfully!");
     }
 }

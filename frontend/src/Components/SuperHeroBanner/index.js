@@ -1,7 +1,7 @@
-import './navbar.css';
+import './banner.css';
 import React from 'react';
 
-export default class NavBar extends React.Component {
+export default class SuperHeroBanner extends React.Component {
     /*state = {
         username: 'Tan',
     }*/

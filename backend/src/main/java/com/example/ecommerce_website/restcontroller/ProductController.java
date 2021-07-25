@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -33,34 +34,33 @@ public class ProductController {
     private RatingService ratingService;
 
     @GetMapping()
-    public ResponseEntity<List<ProductDTO>> getAll() {
-        List<ProductDTO> dtoList = productService.convertToDtoList(productService.getProductList());
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+    public ResponseEntity<?> getProduct(@PathVariable Long id) {
         Optional<Product> product = productService.getProduct(id);
         if (!product.isPresent()) {
             throw new ProductNotFoundException(id);
         }
         ProductDTO dto = productService.convertToDto(product.get());
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<ProductDTO> getProductByName(@PathVariable String name) {
+    public ResponseEntity<?> getProductByName(@PathVariable String name) {
         Product product = productService.getProductByName(name);
         if (product == null) {
             throw new ProductNotFoundException(name);
         }
         ProductDTO dto = productService.convertToDto(product);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/category/{category_name}")
-    public ResponseEntity<List<ProductDTO>> getProductByCategory(@PathVariable String category_name) {
-        return new ResponseEntity<>(productService.convertToDtoList(productService.getProductsByCategory(category_name)), HttpStatus.OK);
+    public ResponseEntity<?> getProductByCategory(@PathVariable String category_name) {
+        return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductsByCategory(category_name)));
     }
 
     @PostMapping("/admin")
@@ -79,7 +79,7 @@ public class ProductController {
                     .body(String.format("Could not upload the image: %s!", file.getOriginalFilename()));
         }
         productService.saveProduct(productService.convertToEntity(productDTO));
-        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
+        return ResponseEntity.ok().body(productDTO);
     }
 
     @PutMapping("/admin")
