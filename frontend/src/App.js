@@ -42,7 +42,6 @@ export default function App() {
 
   return (
     <div>
-      <NavBar/>
       <AdminPage/> 
     </div>
   );

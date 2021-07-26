@@ -1,7 +1,4 @@
-tr {
+.category-background {
     text-align:center;
-}
-
-.category-container {
-    text-align:center;
+    padding: 0px 10px;
 }

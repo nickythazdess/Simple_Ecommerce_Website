@@ -3,31 +3,27 @@ import SideBar from "../../components/SideBar"
 //import Product from "../../components/Admin/Product"
 import Category from "../../components/Admin/Category"
 //import Account from "../../components/Admin/Account"
-import * as http from "../../service/httpHelper"
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom"
+import { Row, Col } from "reactstrap";
+
 
 export default function AdminPage() {
-    const [choice, setChoice] = useState("PRODUCT");
-    const choices = ["PRODUCT", "CATEGORY", "ACCOUNT"]
-
-    /*function showRoute(){
-        switch(choice){
-          case "PRODUCT": return (<Product/>);
-          case "CATEGORY": return (<Category/>);
-          case "ACCOUNT": return (<Account/>);
-          default: return;
-        }
-    }*/
-
-    const handleChoiceChange = (e) => {
-        console.log(e);
-        setChoice(e);
-    }
-    useEffect(()=>{},[choice]);
+    const choices = [["PRODUCT", '/admin/product'], ["CATEGORY", '/admin/category'], ["ACCOUNT", '/admin/account']]
 
     return (
-        //http.get("/product")
-        <SideBar title="ADMIN WORKSPACE" onChoice={(e) => handleChoiceChange(e)} choices={choices}/>
-        //<Category/>
-        //showRoute()
+        <Row className="admin-background">
+            <Router>
+                <Col className="col-2 admin-sidebar">
+                    <SideBar title="ADMIN WORKSPACE" choices={choices}/>
+                </Col>
+                <Col className="col admin-content">
+                    <Switch>
+                        <Route path='/admin/category' exact component={Category}/>
+                        {/*<Route path='/admin/product' exact component={Product}/>
+                        <Route path='/admin/account' exact component={Account}/>*/}
+                    </Switch>
+                </Col>
+            </Router>
+        </Row>
     );
 }

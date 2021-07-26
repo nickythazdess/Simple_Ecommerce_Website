@@ -5,11 +5,11 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 const CustomModal = (props) => {
     const {
       buttonLabel,
-      className,
+      btnColor,
+      modalClassName,
       title,
       body,
-      onConfirm,
-      confirmButtonLabel
+      confirmBtn
     } = props;
   
     const [modal, setModal] = useState(false);
@@ -18,14 +18,14 @@ const CustomModal = (props) => {
   
     return (
       <div>
-        <Button color="info" onClick={toggle}>{buttonLabel}</Button>
-        <Modal isOpen={modal} backdrop={true} toggle={toggle} className={className}>
+        <Button color={btnColor} onClick={toggle}>{buttonLabel}</Button>
+        <Modal isOpen={modal} backdrop={true} toggle={toggle} className={modalClassName}>
             <ModalHeader toggle={toggle}>{title}</ModalHeader>
             <ModalBody>
               {body}
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={onConfirm}>{confirmButtonLabel}</Button>{' '}
+                {confirmBtn}
                 <Button color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

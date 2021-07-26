@@ -47,7 +47,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws ParseException {
+    public ResponseEntity<?> createCategory(@RequestBody CategoryDTO categoryDTO) throws ParseException {
         if (categoryService.exist(categoryDTO.getName()))
             throw new CategoryExistedException(categoryDTO.getName());
         categoryService.saveCategory(categoryService.convertToEntity(categoryDTO));
@@ -55,7 +55,9 @@ public class CategoryController {
     }
 
     @PutMapping("/admin")
-    public ResponseEntity<?> updateCategory(@Valid @RequestBody(required = true) CategoryDTO categoryUpdate) throws ParseException {
+    public ResponseEntity<?> updateCategory(@RequestBody CategoryDTO categoryUpdate) throws ParseException {
+        if (categoryService.exist(categoryUpdate.getName()))
+            throw new CategoryExistedException(categoryUpdate.getName());
         Category category = categoryService.convertToEntity(categoryUpdate);
         categoryService.updateCategory(category);
         return ResponseEntity.ok().body("Update successfully!");
