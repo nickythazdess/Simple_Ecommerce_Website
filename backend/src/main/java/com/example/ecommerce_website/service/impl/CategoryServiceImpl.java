@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category saveCategory(Category ca) { return repo.save(ca); }
 
-    public void deleteCategory(Long id) { repo.delete(getCategory(id).get()); }
+    public void deleteCategory(Long id) { repo.deleteById(id); }
 
     public Category updateCategory(Category ca) { return repo.save(ca); }
 

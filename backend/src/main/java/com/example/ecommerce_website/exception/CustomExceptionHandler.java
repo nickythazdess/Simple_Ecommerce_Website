@@ -83,7 +83,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = EmailExistedException.class)
     public ResponseEntity<String> emailExistedException(EmailExistedException ex) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.CONFLICT;
         return new ResponseEntity<>(prepareErrorJSON(status, ex), status);
     }
 }

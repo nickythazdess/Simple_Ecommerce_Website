@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -36,8 +34,21 @@ public class AccountServiceImpl implements AccountService {
 
     public Optional<Account> getUserByEmail(String email) { return repo.findByEmail(email); }
 
+    public Boolean existsByUsername(String username) {return repo.existsByUsername(username);}
+
+    public Boolean existsByEmail(String email){return repo.existsByEmail(email);}
+
+    public void deleteAccount(Long id) { repo.deleteById(id); }
+
+    public Account updateAccount(Account acc) { return repo.save(acc); }
+
     public AccountDTO convertToDto(Account acc){
         AccountDTO accountDTO = modelMapper.map(acc, AccountDTO.class);
+        Set<String> roles = new HashSet<>();
+        acc.getRoles().forEach(role -> {
+            roles.add(role.getName().name());
+        });
+        accountDTO.setRoles(roles);
         return accountDTO;
     }
 

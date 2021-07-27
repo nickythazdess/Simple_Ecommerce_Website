@@ -19,10 +19,9 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -65,12 +64,12 @@ public class ProductController {
 
     @PostMapping("/admin")
     @ResponseBody
-    public ResponseEntity<?> createProduct(@Valid @RequestBody(required = true) ProductDTO productDTO, @RequestParam("file") MultipartFile file) throws ParseException {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody(required = true) ProductDTO productDTO, @RequestParam(name="file", required=false) MultipartFile file) throws ParseException {
         if (productService.exist(productDTO.getName()))
             throw new ProductExistedException(productDTO.getName());
         productDTO.setCreatedDate(LocalDate.now());
         productDTO.setUpdatedDate(LocalDate.now());
-        try {
+        if (!file.isEmpty()) try {
             Image image = new Image(Base64.getEncoder().encodeToString(file.getBytes()), productDTO.getName(), file.getContentType(), file.getSize());
             imageService.saveImage(image);
             productDTO.setImg_id(image);

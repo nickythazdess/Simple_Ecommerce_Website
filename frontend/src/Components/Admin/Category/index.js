@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { get, postWithAuth } from "../../../service/httpHelper";
-import Body from "./Body";
+import Detail from "./Detail";
 import CustomModal from "../../Utils/CustomModal";
+import Paging from "../../Utils/Pagination";
 import CustomDropdownButton from "../../Utils/CustomDropDownButton";
 import './admin_category.css'
 
@@ -13,22 +14,40 @@ toast.configure()
 export default function Category() {
     const endpoint = "/category";
     const [cateList, setCateList] = useState([]);
+    const optionChoices = ["ID", "Name"];
     const [sortOption, setSortOption] = useState(["ID", true]);
+    const [currentPage, setPage] = useState(0);
 
-    useEffect(() => {
-      getListCate();
-    }, []);
-
-    useEffect(() => {
-      
-    }, sortOption);
+    const handleSortOptionChange = (item, order) => {
+      setSortOption([item, order]);
+    }
 
     function getListCate(){
       get(endpoint).then(response => {
           if (response.status === 200) {
             setCateList(response.data);
           }
-        });
+      });
+    }
+
+    useEffect(() => {
+      getListCate();
+    }, []);
+
+    function compare (a, b) {
+      if (sortOption[0] === "ID")
+          return a.id-b.id;
+      else if (sortOption[0] === "Name") {
+          return a.name.localeCompare(b.name);
+      }
+    }
+
+    useEffect(() => {}, [sortOption]);
+
+    function sortList() {
+      let sortedList = [{id:1, name:"ABC"}, {id:4, name:"CBA"}, {id:5, name:"BBC"}, {id:4, name:"AAA"}, {id:3, name:"ABB"}].sort(compare);
+      if (!sortOption[1]) sortedList.reverse();
+      return [...sortedList];
     }
 
     const confirmAdd = (e) => {
@@ -49,13 +68,15 @@ export default function Category() {
         }
       }).catch((error) => {
         let message = "Add failed!";
-        console.log(error.response.status);
-        switch (error.response.status) {
-            case 404: message = "Category not found!"; break;
-            case 400: message = "Category already exists!"; break;
-            default: break;
+        if (!error.response) message = "Connection error! Please try again later";
+        else {
+          console.log(error.response.status);
+          switch (error.response.status) {
+              case 404: message = "Category not found!"; break;
+              case 400: message = "Category is already exist!"; break;
+              default: break;
+          }
         }
-        console.log(message);
         toast.error(message, {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 3000,
@@ -71,21 +92,14 @@ export default function Category() {
             type="text"
             name="cate_name"
             required
-            placeholder="Category Name"
-            minLength={1}
-            maxLength={255}/>
+            placeholder="Must contain 2-255 alphabetic characters."
+            pattern="[a-zA-z\-\_]{2,255}"/>
         </FormGroup>
     </Form>
 
-    const handleSortOptionChange = (item, order) => {
-      setSortOption([item, order]);
-    }
-
-    const optionChoices = ["ID", "Name"];
-
     return (
       <div className = "category-background">
-        <h2 className="title-user">CATEGORY MANAGEMENT</h2>
+        <h2>CATEGORY MANAGEMENT</h2>
         <CustomModal
             buttonLabel = "Add"
             btnColor = "success"
@@ -101,19 +115,25 @@ export default function Category() {
         <Table bordered striped>
           <thead>
             <tr>
-              <th>ID</th> <th>NAME</th> <th>ACTION</th>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
-            {(typeof cateList === "undefined") ? null :
-              <Body
-                by = {sortOption[0]}
-                order = {sortOption[1]}
-                cateList={cateList}
-                getListCate={(e) => getListCate()}/>
+            {!cateList ? <h2>Loading...</h2> :
+                sortList().map((cate) => (
+                  <tr key={cate.id}>
+                      <Detail category={cate} update={(e) => getListCate()}/>
+                  </tr>
+                ))
             }
           </tbody>
         </Table>
+        <Paging list = {cateList}
+            total = {cateList.length}
+            size = {5}
+            callback = {null}/>
       </div>
     );
 }

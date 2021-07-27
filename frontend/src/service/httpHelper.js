@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "./Cookie";
 const endpoint = "http://localhost:8080/api";
 //const token = getCookie("token");
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYyNzI5MjExOCwiZXhwIjoxNjI3Mzc4NTE4fQ.lYHtOu3Pv4koB6_lR-wmvm3-HE0XjURmgeG4rUyx389AnKTSx3_GFESP1kAb4JVuYrIXdRtDP0eouUvApSPbiA";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYyNzQwMzM1NSwiZXhwIjoxNjI3NDg5NzU1fQ.4YKfsG5L4MmRrcyrxb69Ad91M4JcSeHidCQlP-kDrz_XPld9oglaihiUPQ14jXixEoh1i1Wjr_HQbRwQi7_fJA";
 
 export function get(url) {
   return axios.get(endpoint + url, {

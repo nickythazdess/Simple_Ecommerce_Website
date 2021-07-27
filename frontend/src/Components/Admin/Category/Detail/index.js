@@ -3,8 +3,8 @@ import {Form, FormGroup, Label, Input, FormText, Button} from 'reactstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { del, put } from "../../../../../service/httpHelper";
-import CustomModal from "../../../../Utils/CustomModal";
+import { del, put } from "../../../../service/httpHelper";
+import CustomModal from "../../../Utils/CustomModal";
 
 toast.configure()
 export default function Detail({category, update}) {
@@ -21,7 +21,6 @@ export default function Detail({category, update}) {
             update();
         }
         }).catch((error) => {
-            console.log(error.message);
             toast.error("Delete failed!", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
@@ -46,11 +45,14 @@ export default function Detail({category, update}) {
         }
         }).catch((error) => {
             let message = "Edit failed!";
-            console.log(error.response.status);
-            switch (error.response.status) {
-                case 404: message = "Category not found!"; break;
-                case 400: message = "Category already exists!"; break;
-                default: break;
+            if (!error.response) message = "Connection error! Please try again later";
+            else {
+                console.log(error.response.status);
+                switch (error.response.status) {
+                    case 404: message = "Category not found!"; break;
+                    case 400: message = "Category is already exist!"; break;
+                    default: break;
+                }
             }
             console.log(message);
             toast.error(message, {
@@ -76,7 +78,7 @@ export default function Detail({category, update}) {
 
     return (
         <>
-            <th scope="row">{category.id}</th>
+            <td>{category.id}</td>
             <td>{category.name}</td>
             <td>
                 <CustomModal

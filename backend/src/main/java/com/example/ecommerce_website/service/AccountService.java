@@ -26,4 +26,12 @@ public interface AccountService {
     List<AccountDTO> convertToDtoList(List<Account> accList);
 
     Account convertToEntity(AccountDTO accountDTO) throws ParseException;
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+
+    void deleteAccount(Long id);
+
+    Account updateAccount(Account acc);
 }
