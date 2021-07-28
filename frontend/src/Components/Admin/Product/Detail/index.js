@@ -37,7 +37,7 @@ export default function Detail({product, update}) {
             id: id,
             name: e.target.name.value,
             dev: e.target.dev.value,
-            price: e.target.price.value,
+            price: e.target.price.value ? e.target.price.value : -1,
             description: e.target.description.value,
             createdDate: null,
             updatedDate: null,
@@ -71,7 +71,7 @@ export default function Detail({product, update}) {
     }
 
     function getListCate(){
-        get(endpoint).then(response => {
+        get(`/category`).then(response => {
             if (response.status === 200) {
               setCateList(response.data);
             }
@@ -83,7 +83,7 @@ export default function Detail({product, update}) {
     }, []);
 
     const editForm = 
-    <Form id="edit-form" onSubmit={(e) => confirmEdit(e)}>
+    <Form id="edit-form" onSubmit={(e) => confirmEdit(e, product.id)}>
         <FormGroup>
             <Label for="name">Product Name</Label> {' '}
             <Input
@@ -111,9 +111,9 @@ export default function Detail({product, update}) {
         <FormGroup>
             <Label for="category-select">Category</Label> {' '}
             <select id="category-select" name="category" form="edit-form">
-                <option value={product.category_name}>{product.category_name}</option>
+                <option key={product.category_name} value={product.category_name}>{product.category_name}</option>
                 {cateList.map((cate) => (
-                    (cate.name !== product.category_name) ? <option value={cate.name}>{cate.name}</option> : null
+                    (cate.name !== product.category_name) ? <option key={cate.name} value={cate.name}>{cate.name}</option> : null
                 ))}
           </select>
         </FormGroup>

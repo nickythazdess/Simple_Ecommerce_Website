@@ -16,17 +16,15 @@
 }
 
 #navbar li:hover {
-  background-color: white;
+  background-color: #DFDFDF;
   color:#3D3D3D;
 }
 
 #navbar li:active {
-  background-color: lightgray;
+  background-color: #DFDFDF;
 }
 
 div.nav-details > * {
-  display: inline-block;
-  color: royalblue;
   font-size: 20px;
 }
 
@@ -34,4 +32,30 @@ img {
   height: 40px;
   margin: auto 40px;
   transform: translateY(20%);
+}
+
+#navbar .btn {
+  padding: 0px 40px;
+  font-size: 20px;
+  color:#DFDFDF;
+}
+
+#navbar .btn:hover {
+  background-color: #DFDFDF;
+  color:#3D3D3D;
+}
+
+#navbar .modal-header {
+  background-color:#3D3D3D;
+  justify-content: center;
+  color: #DFDFDF;
+}
+
+#navbar .nav-details .dropdown-toggle{
+  margin-right: 40px;
+}
+
+#navbar .cusmodal-signin, .cusmodal-signup .toggle-button{
+  padding: 0px 0px;
+  margin-right: 40px;
 }

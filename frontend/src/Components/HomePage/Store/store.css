@@ -1,0 +1,43 @@
+.store-background {
+    background-color: #202020;
+    color: #DFDFDF;
+}
+
+.store-sidebar .sidebar {
+    height: 100vh;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    padding: 5px;
+}
+
+.store-sidebar .sidebar h3 {
+    cursor: default;
+}
+
+.store-sidebar .sidebar li {
+    height: 4vh;
+    list-style: none;
+    text-decoration: none;
+    font-size: 20px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+}
+
+.store-sidebar .sidebar li:hover {
+    color: #202020;
+    cursor: pointer;
+    background-color: #DFDFDF;
+}
+
+.store-sidebar .horizontal-divider {
+    margin: 10px 0px;
+    border-bottom: solid 2px #DFDFDF;
+}
+
+.store-container {
+    padding-top: 10px;
+}

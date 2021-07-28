@@ -26,7 +26,7 @@ const CustomDropdownButton = (props) => {
 
     return (
         <>
-        {order ? <p>Sort ASCENDING by: </p> : <p>Sort DESCENDING by:</p>}
+        <p style={{display: "inline"}}>Sort {order ? "ASCENDING" : "DESCENDING"} by: </p>
         <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle caret> {buttonLabel} </DropdownToggle>
             <DropdownMenu>

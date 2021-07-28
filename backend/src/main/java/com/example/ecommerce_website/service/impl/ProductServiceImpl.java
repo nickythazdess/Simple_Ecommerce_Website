@@ -1,14 +1,13 @@
 package com.example.ecommerce_website.service.impl;
 
-import com.example.ecommerce_website.displayDTO.ImageDisplay;
 import com.example.ecommerce_website.displayDTO.ProductDisplay;
-import com.example.ecommerce_website.dto.ImageDTO;
 import com.example.ecommerce_website.dto.ProductDTO;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.service.CategoryService;
 import com.example.ecommerce_website.service.ProductService;
+import com.example.ecommerce_website.service.RatingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private RatingService ratingService;
 
     public void setProductRepo(ProductRepository repo) { this.repo = repo; }
 
@@ -45,12 +46,15 @@ public class ProductServiceImpl implements ProductService {
 
     public void deleteProduct(Long id) { repo.delete(getProduct(id).get()); }
 
+    public void deleteProductByCategoryID(Long cid) { repo.deleteAllByCategory_Id(cid); }
+
     public Boolean exist(String name) { return repo.existsByName(name); }
 
     public ProductDTO convertToDto(Product product){
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setCategory_name(product.getCategory().getName());
         productDTO.setImg_id(product.getImg());
+        ratingService.getProductRating(product.getId());
         return productDTO;
     }
 
@@ -73,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
 
     public ProductDisplay convertToDisplay(ProductDTO dto){
         ProductDisplay productDisplay = modelMapper.map(dto, ProductDisplay.class);
+        productDisplay.setImg(dto.getImg_id().getData());
         return productDisplay;
     }
 

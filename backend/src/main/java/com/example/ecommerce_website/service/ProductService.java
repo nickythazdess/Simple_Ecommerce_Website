@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.service;
 
+import com.example.ecommerce_website.displayDTO.ProductDisplay;
 import com.example.ecommerce_website.dto.ProductDTO;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
@@ -28,9 +29,13 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
+    void deleteProductByCategoryID(Long id);
+
     Boolean exist(String name);
 
     ProductDTO convertToDto(Product product);
+
+    ProductDisplay convertToDisplay(ProductDTO dto);
 
     List<ProductDTO> convertToDtoList(List<Product> productList);
 

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import {Form, FormGroup, Label, Input, FormText, Button} from 'reactstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,7 @@ import CustomModal from "../../../Utils/CustomModal";
 toast.configure()
 export default function Detail({category, update}) {
     const endpoint = "/category";
-
+    
     const confirmDelete = (id) => {
         del(endpoint + `/admin/${id}`)
         .then((response) => {

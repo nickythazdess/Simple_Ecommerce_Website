@@ -5,6 +5,7 @@ import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.repository.CategoryRepository;
 import com.example.ecommerce_website.service.CategoryService;
+import com.example.ecommerce_website.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository repo;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private ModelMapper modelMapper;

@@ -2,11 +2,8 @@ package com.example.ecommerce_website.service.impl;
 
 import com.example.ecommerce_website.displayDTO.AccountDisplay;
 import com.example.ecommerce_website.dto.AccountDTO;
-import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.entity.Account;
-import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.repository.AccountRepository;
-import com.example.ecommerce_website.repository.CategoryRepository;
 import com.example.ecommerce_website.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,6 @@
 package com.example.ecommerce_website.service.impl;
 
-import com.example.ecommerce_website.displayDTO.ProductDisplay;
 import com.example.ecommerce_website.displayDTO.RatingDisplay;
-import com.example.ecommerce_website.dto.ProductDTO;
 import com.example.ecommerce_website.dto.RatingDTO;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.RatingID;

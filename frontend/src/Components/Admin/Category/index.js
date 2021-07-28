@@ -23,12 +23,12 @@ export default function Category() {
     }
 
     function getListCate(){
-      get(endpoint).then(response => {
+      get(`/category`).then(response => {
           if (response.status === 200) {
             setCateList(response.data);
           }
       });
-    }
+  }
 
     useEffect(() => {
       getListCate();
@@ -45,9 +45,9 @@ export default function Category() {
     useEffect(() => {}, [sortOption]);
 
     function sortList() {
-      let sortedList = [{id:1, name:"ABC"}, {id:4, name:"CBA"}, {id:5, name:"BBC"}, {id:4, name:"AAA"}, {id:3, name:"ABB"}].sort(compare);
+      let sortedList = cateList.sort(compare);
       if (!sortOption[1]) sortedList.reverse();
-      return [...sortedList];
+      return sortedList;
     }
 
     const confirmAdd = (e) => {
@@ -103,7 +103,7 @@ export default function Category() {
         <CustomModal
             buttonLabel = "Add"
             btnColor = "success"
-            className = "cusmodal-add"
+            modalClassName = "cusmodal-add"
             title = {`Add Category`}
             body = {addForm}
             confirmBtn = {<Button color="primary" type="submit" form="add-form">Submit</Button>}>

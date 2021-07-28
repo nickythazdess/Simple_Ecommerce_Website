@@ -95,7 +95,7 @@ public class ImageController {
 
     @DeleteMapping("/admin/{image_id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteImage(@PathVariable String image_id) {
+    public ResponseEntity<?> deleteImage(@PathVariable String image_id) {
         try {
             Image image = imageService.getImageById(image_id).get();
             imageService.deleteImage(image_id);

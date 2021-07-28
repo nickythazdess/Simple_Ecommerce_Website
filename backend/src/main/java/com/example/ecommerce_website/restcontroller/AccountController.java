@@ -77,6 +77,6 @@ public class AccountController {
             throw new AccountNotFoundException(id);
         }
         accountService.deleteAccount(id);
-        return ResponseEntity.ok().body("Delete successfully!");
+        return ResponseEntity.ok().body(String.format("Delete successfully!"));
     }
 }

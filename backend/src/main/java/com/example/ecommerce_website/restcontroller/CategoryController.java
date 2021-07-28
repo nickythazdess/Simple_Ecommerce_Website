@@ -5,6 +5,7 @@ import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.exception.category.CategoryExistedException;
 import com.example.ecommerce_website.exception.category.CategoryNotFoundException;
 import com.example.ecommerce_website.service.CategoryService;
+import com.example.ecommerce_website.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping()
     public ResponseEntity<?> getAll() {
@@ -66,6 +70,7 @@ public class CategoryController {
             throw new CategoryNotFoundException(id);
         }
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok().body("Delete successfully!");
+        productService.deleteProductByCategoryID(id);
+        return ResponseEntity.ok().body(String.format("Delete successfully!"));
     }
 }

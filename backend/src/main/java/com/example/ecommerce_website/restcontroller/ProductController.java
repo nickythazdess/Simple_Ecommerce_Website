@@ -1,10 +1,13 @@
 package com.example.ecommerce_website.restcontroller;
 
 import com.example.ecommerce_website.dto.ProductDTO;
+import com.example.ecommerce_website.entity.Account;
 import com.example.ecommerce_website.entity.Image;
 import com.example.ecommerce_website.entity.Product;
+import com.example.ecommerce_website.exception.account.AccountNotFoundException;
 import com.example.ecommerce_website.exception.product.ProductExistedException;
 import com.example.ecommerce_website.exception.product.ProductNotFoundException;
+import com.example.ecommerce_website.service.CategoryService;
 import com.example.ecommerce_website.service.ImageService;
 import com.example.ecommerce_website.service.ProductService;
 import com.example.ecommerce_website.service.RatingService;
@@ -28,12 +31,19 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
+    private CategoryService categoryService;
+    @Autowired
     private ImageService imageService;
     @Autowired
     private RatingService ratingService;
 
-    @GetMapping()
+    @GetMapping("/admin")
     public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductList()));
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getProductList() {
         return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductList()));
     }
 
@@ -83,23 +93,45 @@ public class ProductController {
 
     @PutMapping("/admin")
     @ResponseBody
-    public ProductDTO updateProduct(@Valid @RequestBody(required = true) ProductDTO productUpdate) throws ParseException {
-        Product product = productService.convertToEntity(productUpdate);
-        productUpdate.setUpdatedDate(LocalDate.now());
-        productService.updateProduct(product);
-        return productUpdate;
+    public ResponseEntity<?> updateProduct(@RequestBody(required = true) ProductDTO productUpdate, @RequestParam(name="file", required=false) MultipartFile file) {
+        Optional<Product> productTemp = productService.getProduct(productUpdate.getId());
+        if (!productTemp.isPresent()) throw new ProductNotFoundException(productUpdate.getId());
+        Product product = productTemp.get();
+
+        if (!productUpdate.getName().isEmpty()) product.setName(productUpdate.getName());
+        if (!productUpdate.getCategory_name().isEmpty()) product.setCategory(categoryService.getCategoryByName(productUpdate.getCategory_name()));
+        if (productUpdate.getPrice() >= 0) product.setPrice(productUpdate.getPrice());
+        if (!productUpdate.getDev().isEmpty()) product.setDev(productUpdate.getDev());
+        if (!productUpdate.getDescription().isEmpty()) product.setDescription(product.getDescription());
+
+        if (!file.isEmpty()) try {
+            if (product.getImg() != null) {
+                Image image = imageService.getImageById(product.getImg().getId()).get();
+                image.setData(Base64.getEncoder().encodeToString(file.getBytes()));
+                image.setContentType(file.getContentType());
+                image.setSize(file.getSize());
+                imageService.saveImage(image);
+            }
+            Image image = new Image(Base64.getEncoder().encodeToString(file.getBytes()), product.getName(), file.getContentType(), file.getSize());
+            imageService.saveImage(image);
+            product.setImg(image);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(String.format("Could not upload the image: %s!", file.getOriginalFilename()));
+        }
+
+        product.setUpdatedDate(LocalDate.now());
+        return ResponseEntity.ok().body(productService.convertToDto(product));
     }
 
     @DeleteMapping("/admin/{id}")
-    public HashMap<String, String> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         Optional<Product> product = productService.getProduct(id);
         if (!product.isPresent()) {
             throw new ProductNotFoundException(id);
         }
         productService.deleteProduct(id);
         ratingService.cleanUpRatingWhenProductDelete(id);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("message", "Delete successfully!");
-        return map;
+        return ResponseEntity.ok().body(String.format("Delete successful"));
     }
 }

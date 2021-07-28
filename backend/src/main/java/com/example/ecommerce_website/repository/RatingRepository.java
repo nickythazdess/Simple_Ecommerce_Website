@@ -18,4 +18,6 @@ public interface RatingRepository extends JpaRepository<Rating, RatingID> {
     void deleteAllById_Pid(Long pid);
 
     void deleteAllById_Uid(Long pid);
+
+    long countById_Pid(Long pid);
 }

@@ -71,7 +71,7 @@ export default function Detail({account, update}) {
     }
 
     const editForm = 
-    <Form id="edit-form" onSubmit={(e) => confirmEdit(e)}>
+    <Form id="edit-form" onSubmit={(e) => confirmEdit(e, account.id)}>
         <FormGroup>
             <Label for="name">Display Name</Label>
             <Input
@@ -136,14 +136,14 @@ export default function Detail({account, update}) {
                     body = {editForm}
                     confirmBtn = {<Button color="primary" type="submit" form="edit-form">Submit</Button>}>
                 </CustomModal>
-                <CustomModal
+                {/*<CustomModal
                     buttonLabel = "Delete"
                     btnColor = "danger"
                     modalClassName = "cusmodal-delete"
-                    title = {`Delete Category ${account.username}`}
+                    title = {`Delete account ${account.username}`}
                     body = {<h5>Are you sure?</h5>}
                     confirmBtn = {<Button color="danger" onClick={(e) => confirmDelete(account.id)}>Confirm</Button>}>
-                </CustomModal>
+                </CustomModal>*/}
             </td>
         </>
     );

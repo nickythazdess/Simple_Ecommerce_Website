@@ -20,7 +20,6 @@ const Paging = (props) => {
     }
 
     useEffect(() => {
-        console.log(currentPage);
     }, [currentPage]);
 
     return (

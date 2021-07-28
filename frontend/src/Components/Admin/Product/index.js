@@ -32,7 +32,7 @@ export default function Product() {
     }
 
     function getListCate(){
-      get(endpoint).then(response => {
+      get(`/category`).then(response => {
           if (response.status === 200) {
             setCateList(response.data);
           }
@@ -134,7 +134,7 @@ export default function Product() {
             <Label for="category-select">Category</Label> {' '}
             <select id="category-select" name="category" form="add-form">
               {cateList.map((cate) => (
-                  <option value={cate.name}>{cate.name}</option>
+                  <option key={cate.name} value={cate.name}>{cate.name}</option>
               ))}
           </select>
         </FormGroup>
@@ -154,7 +154,7 @@ export default function Product() {
         <CustomModal
             buttonLabel = "Add"
             btnColor = "success"
-            className = "cusmodal-add"
+            modalClassName = "cusmodal-add"
             title = {`Create new product`}
             body = {addForm}
             confirmBtn = {<Button color="primary" type="submit" form="add-form">Submit</Button>}>

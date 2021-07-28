@@ -14,7 +14,7 @@ toast.configure()
 export default function Account() {
     const endpoint = "/account";
     const [accList, setAccList] = useState([]);
-    const optionChoices = ["ID", "Email", "Username", "Role"];
+    const optionChoices = ["ID", "Email", "Username", "Name", "Role"];
     const [sortOption, setSortOption] = useState(["ID", true]);
     const [currentPage, setPage] = useState(0);
 
@@ -41,7 +41,8 @@ export default function Account() {
       switch (sortOption[0]) {
         case "ID": return a.id-b.id;
         case "Email": return a.email.localeCompare(b.email);
-        case "Username": return a.name.localeCompare(b.name);
+        case "Name": return a.name.localeCompare(b.name);
+        case "Username": return a.username.localeCompare(b.username);
         case "Role": return a.role[0].localeCompare(b.role[0]);
         default: return a.id-b.id;
       }
@@ -52,7 +53,7 @@ export default function Account() {
     function sortList() {
       let sortedList = accList.sort(compare);
       if (!sortOption[1]) sortedList.reverse();
-      return [...sortedList];
+      return sortedList;
     }
 
     const confirmAdd = (e) => {
@@ -69,10 +70,10 @@ export default function Account() {
         username: e.target.username.value,
         email: e.target.email.value,
         password: e.target.password.value,
-        role: e.target.role.value
+        role: [e.target.role.value]
       });
       console.log(body);
-      post(`/signup`, body)
+      post(`/auth/signup`, body)
       .then((response) => {
         if (response.status === 200) {
           toast.success("Add account succeeded!", {
@@ -160,9 +161,9 @@ export default function Account() {
         <FormGroup>
           <Label for="role">Role: </Label>
           <select id="role-select" name="role" form="add-form">
-            <option value={["ROLE_USER"]}>User</option>
-            <option value={["ROLE_ADMIN"]}>Admin</option>
-            <option value={["ROLE_USER", "ROLE_ADMIN"]}>Both</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value={["admin", "user"]}>Both</option>
           </select>
         </FormGroup>
     </Form>
@@ -173,7 +174,7 @@ export default function Account() {
         <CustomModal
             buttonLabel = "Add"
             btnColor = "success"
-            className = "cusmodal-add"
+            modalClassName = "cusmodal-add"
             title = {`Create new account`}
             body = {addForm}
             confirmBtn = {<Button color="primary" type="submit" form="add-form">Submit</Button>}>

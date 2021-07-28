@@ -1,8 +1,6 @@
 package com.example.ecommerce_website.service.impl;
 
-import com.example.ecommerce_website.displayDTO.CategoryDisplay;
 import com.example.ecommerce_website.displayDTO.ImageDisplay;
-import com.example.ecommerce_website.dto.CategoryDTO;
 import com.example.ecommerce_website.dto.ImageDTO;
 import com.example.ecommerce_website.entity.Image;
 import com.example.ecommerce_website.entity.Product;
@@ -13,10 +11,7 @@ import com.example.ecommerce_website.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findById(product.get().getImg().getId());
     }
 
-    public void saveImage(Image image) throws IOException {
+    public void saveImage(Image image) {
         imageRepository.save(image);
     }
 

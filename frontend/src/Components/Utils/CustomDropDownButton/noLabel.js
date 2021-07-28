@@ -26,14 +26,14 @@ const NoLabelDropdownButton = (props) => {
 
     return (
         <>
-        <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-            <DropdownToggle caret> {buttonLabel} </DropdownToggle>
-            <DropdownMenu>
-                {choices.map((item) => {
-                    return <DropdownItem key={item} onClick={(e) => handleChoice(item)}>{item}</DropdownItem>
-                })}
-            </DropdownMenu>
-        </ButtonDropdown>
+            <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle caret> {buttonLabel} </DropdownToggle>
+                <DropdownMenu>
+                    {choices.map((item) => {
+                        return <DropdownItem key={item} onClick={(e) => handleChoice(item)}>{item}</DropdownItem>
+                    })}
+                </DropdownMenu>
+            </ButtonDropdown>
         </>
     );
 }
