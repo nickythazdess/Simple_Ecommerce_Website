@@ -5,6 +5,7 @@ import {AnotherSideBar} from '../../SideBar'
 import { get } from "../../../service/httpHelper";
 import Paging from "../../Utils/Pagination";
 import CustomDropdownButton from "../../Utils/CustomDropDownButton";
+
 import './store.css';
 
 export default function Store() {
@@ -56,18 +57,19 @@ export default function Store() {
           }
     }
   
-      useEffect(() => {}, [sortOption, productList]);
-  
-      function sortList() {
-        let sortedList = cateList.sort(compare);
-        if (!sortOption[1]) sortedList.reverse();
-        return sortedList;
-      }
+    useEffect(() => {}, [sortOption, productList]);
+
+    function sortList() {
+    let sortedList = cateList.sort(compare);
+    if (!sortOption[1]) sortedList.reverse();
+    return sortedList;
+    }
 
     const handleSortOptionChange = (item, order) => {
         setSortOption([item, order]);
     }
 
+    React.render(<Store/>, document.getElementById('star-rating'));
     return (
         <Row className="store-background">
             <Col className="col-xl-2 store-sidebar">
@@ -81,7 +83,7 @@ export default function Store() {
                 sendChoice = {(item, order) => handleSortOptionChange(item, order)}/>
                 
                 <div className="product-list-container">
-
+                
                 </div>
 
                 <Paging list = {cateList}
@@ -91,4 +93,5 @@ export default function Store() {
             </Col>
         </Row>
     );
+
 }

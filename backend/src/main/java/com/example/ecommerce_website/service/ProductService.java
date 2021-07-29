@@ -17,9 +17,11 @@ public interface ProductService {
 
     Optional<Product> getProduct(Long id);
 
-    public Product getProductByName(String name);
+    Product getProductByName(String name);
 
-    public Product getProductByDev(String dev);
+    List<Product> searchProductByName(String name);
+
+    Product getProductByDev(String dev);
 
     List<Product> getProductsByCategory(String category_name);
 
@@ -37,7 +39,13 @@ public interface ProductService {
 
     ProductDisplay convertToDisplay(ProductDTO dto);
 
+    ProductDisplay convertEntToDisplay(Product product);
+
     List<ProductDTO> convertToDtoList(List<Product> productList);
+
+    List<ProductDisplay> convertToDisplayList(List<ProductDTO> dtoList);
+
+    List<ProductDisplay> convertEntToDisplayList(List<Product> productList);
 
     Product convertToEntity(ProductDTO productDTO) throws ParseException;
 }

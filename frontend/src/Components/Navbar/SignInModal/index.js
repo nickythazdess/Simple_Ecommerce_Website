@@ -9,74 +9,74 @@ import CustomModal from '../../Utils/CustomModal';
 
 toast.configure()
 const SignInModal = (props) => {
-    const {
-        onLogIn,
-    } = props;
+  const {
+      onLogIn,
+  } = props;
 
-    const [showPassword, setShowPassword] = useState(false);
-    const toggleShowPassword = () => setShowPassword(!showPassword);
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
-    const [signOption, setSignOption] = useState(true);
-    const toggleSignOption = () => setSignOption(!signOption);
+  const [signOption, setSignOption] = useState(true);
+  const toggleSignOption = () => setSignOption(!signOption);
 
-    const signUpHandle = (e) => {
-        e.preventDefault();
-        if (e.target.password.value !== e.target.re_password.value) {
-          toast.error("Password and Re-type password does not match!", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 3000,
-          });
-        }
-        const body = JSON.stringify({
-          id: 0,
-          name: e.target.name.value ? e.target.name.value : e.target.username.value,
-          username: e.target.username.value,
-          email: e.target.email.value,
-          password: e.target.password.value,
-          role: ["user"]
+  const signUpHandle = (e) => {
+      e.preventDefault();
+      if (e.target.password.value !== e.target.re_password.value) {
+        toast.error("Password and Re-type password does not match!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
         });
-        console.log(body);
-        post(`/auth/signup`, body)
-        .then((response) => {
-          if (response.status === 200) {
-            toast.success("Sign up succeeded! Sign in now", {
-                position: "top-right",
-                autoClose: 3000,
-            });
-            toggleSignOption();
-          }
-        }).catch((error) => {
-          let message = "Sign up failed!";
-          if (!error.response) message = "Connection error! Please try again later";
-          else {
-            console.log(error.response.status);
-            switch (error.response.status) {
-                case 400: message = "The username has been taken! Please use another username"; break;
-                case 409: message = "The email has been used for an existing account!"; break;
-                default: break;
-            }
-          }
-          toast.error(message, {
-              position: toast.POSITION.TOP_RIGHT,
+      }
+      const body = JSON.stringify({
+        id: 0,
+        name: e.target.name.value ? e.target.name.value : e.target.username.value,
+        username: e.target.username.value,
+        email: e.target.email.value,
+        password: e.target.password.value,
+        role: ["user"]
+      });
+      console.log(body);
+      post(`/auth/signup`, body)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("Sign up succeeded! Sign in now", {
+              position: "top-right",
               autoClose: 3000,
           });
+          toggleSignOption();
+        }
+      }).catch((error) => {
+        let message = "Sign up failed!";
+        if (!error.response) message = "Connection error! Please try again later";
+        else {
+          console.log(error.response.status);
+          switch (error.response.status) {
+              case 400: message = "The username has been taken! Please use another username"; break;
+              case 409: message = "The email has been used for an existing account!"; break;
+              default: break;
+          }
+        }
+        toast.error(message, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
         });
-    }
-
-    const signInHandle = (e) => {
-      e.preventDefault();
-      const body = JSON.stringify({
-        username: e.target.username.value,
-        password: e.target.password.value
       });
-      post(`/auth/signin`, body)
+  }
+
+  const signInHandle = (e) => {
+    e.preventDefault();
+    const body = JSON.stringify({
+      username: e.target.username.value,
+      password: e.target.password.value
+    });
+    post(`/auth/signin`, body)
       .then((response) => {
         if (response.status === 200) {
           toast.success(`Welcome back my friend, ${response.data.name}`, {
               position: "top-right",
               autoClose: 3000,
           });
-          document.cookie = `token=${response.data.accessToken}; max-age=86400; path=/;`;
+          document.cookie = `token=${response.data.token}; max-age=86400; path=/;`;
           document.cookie = `name=${response.data.name}; max-age=86400; path=/;`;
           document.cookie = `username=${response.data.username}; max-age=86400; path=/;`;
           document.cookie = `email=${response.data.email}; max-age=86400; path=/;`;
@@ -99,7 +99,7 @@ const SignInModal = (props) => {
             autoClose: 3000,
         });
       });
-    }
+  }
       
   const signUpForm =
     <Form id="signup-form" onSubmit={(e) => signUpHandle(e)}>

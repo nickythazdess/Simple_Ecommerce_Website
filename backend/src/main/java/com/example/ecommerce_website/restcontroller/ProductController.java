@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -38,13 +39,15 @@ public class ProductController {
     private RatingService ratingService;
 
     @GetMapping("/admin")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> adminGetAll() {
         return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductList()));
     }
 
+    // Public space
+
     @GetMapping()
-    public ResponseEntity<?> getProductList() {
-        return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductList()));
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok().body(productService.convertEntToDisplayList(productService.getProductList()));
     }
 
     @GetMapping("/{id}")
@@ -53,8 +56,7 @@ public class ProductController {
         if (!product.isPresent()) {
             throw new ProductNotFoundException(id);
         }
-        ProductDTO dto = productService.convertToDto(product.get());
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(productService.convertEntToDisplay(product.get()));
     }
 
     @GetMapping("/name/{name}")
@@ -63,12 +65,46 @@ public class ProductController {
         if (product == null) {
             throw new ProductNotFoundException(name);
         }
-        ProductDTO dto = productService.convertToDto(product);
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(productService.convertEntToDisplay(product));
+    }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<?> searchProductByName(@PathVariable String name) {
+        List<Product> productList = productService.searchProductByName(name);
+        return ResponseEntity.ok().body(productService.convertEntToDisplayList(productList));
     }
 
     @GetMapping("/category/{category_name}")
     public ResponseEntity<?> getProductByCategory(@PathVariable String category_name) {
+        return ResponseEntity.ok().body(productService.convertEntToDisplayList(productService.getProductsByCategory(category_name)));
+    }
+
+    // Admin space
+
+
+
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<?> adminGetProduct(@PathVariable Long id) {
+        Optional<Product> product = productService.getProduct(id);
+        if (!product.isPresent()) {
+            throw new ProductNotFoundException(id);
+        }
+        ProductDTO dto = productService.convertToDto(product.get());
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/admin/name/{name}")
+    public ResponseEntity<?> adminGetProductByName(@PathVariable String name) {
+        Product product = productService.getProductByName(name);
+        if (product == null) {
+            throw new ProductNotFoundException(name);
+        }
+        ProductDTO dto = productService.convertToDto(product);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/admin/category/{category_name}")
+    public ResponseEntity<?> adminGetProductByCategory(@PathVariable String category_name) {
         return ResponseEntity.ok().body(productService.convertToDtoList(productService.getProductsByCategory(category_name)));
     }
 

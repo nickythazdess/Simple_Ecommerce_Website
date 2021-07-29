@@ -30,40 +30,26 @@ public class RatingController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/admin/all")
-    public ResponseEntity<?> getRatingList(){
-        return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getRatingList()));
-    }
-
-    @GetMapping("/admin/user/{uid}")
-    public ResponseEntity<?> getUserRatings(@PathVariable Long uid){
-        return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getUserRating(uid)));
-    }
+    // Public space
 
     @GetMapping("/product/{pid}")
     public ResponseEntity<?> getProductRatings(@PathVariable Long pid){
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
-        else return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getProductRating(pid)));
+        else return ResponseEntity.ok().body(ratingService.convertEntToDisplayList(ratingService.getProductRating(pid)));
     }
 
     @GetMapping("/avg/product/{pid}")
     public ResponseEntity<?> getProductAverageRating(@PathVariable Long pid){
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
-        else {
-            List<RatingDTO> list = ratingService.convertToDtoList(ratingService.getProductRating(pid));
-            int total = list.size();
-            long sum = 0;
-            for (RatingDTO rate : list) {
-                sum += rate.getRate();
-            }
-            return ResponseEntity.ok().body(sum / total);
-        }
+        return ResponseEntity.ok().body(ratingService.getProductAverageRating(pid));
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<?> getProductRatingOfUSer(@RequestParam(name="uid") Long uid, @RequestParam(name="pid") Long pid) {
+    @GetMapping("/user/{pid}")
+    public ResponseEntity<?> getProductRatingOfUSer(@PathVariable Long pid) {
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
-        return ResponseEntity.ok().body(ratingService.convertToDto(ratingService.getProductRatingOfUser(uid, pid)));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = ((UserDetailsImpl)auth.getPrincipal());
+        return ResponseEntity.ok().body(ratingService.convertToDto(ratingService.getProductRatingOfUser(userDetails.getId(), pid)));
     }
 
     @PostMapping()
@@ -105,5 +91,17 @@ public class RatingController {
         UserDetailsImpl userDetails = ((UserDetailsImpl)auth.getPrincipal());
         ratingService.deleteRating(userDetails.getId(), ratingDTO.getPid());
         return ResponseEntity.ok().body(String.format("Delete successful"));
+    }
+
+    // Admin space
+
+    @GetMapping("/admin/all")
+    public ResponseEntity<?> getRatingList(){
+        return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getRatingList()));
+    }
+
+    @GetMapping("/admin/user/{uid}")
+    public ResponseEntity<?> getUserRatings(@PathVariable Long uid){
+        return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getUserRating(uid)));
     }
 }

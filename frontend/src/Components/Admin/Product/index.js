@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {Table, Form, FormGroup, Label, Input, Button, InputGroupAddon} from "reactstrap";
+import {Table, Form, FormGroup, Label, Input, Button} from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { get, post } from "../../../service/httpHelper";
+import { get, getWithAuth, post } from "../../../service/httpHelper";
 import Detail from "./Detail";
 import CustomModal from "../../Utils/CustomModal";
 import Paging from "../../Utils/Pagination";
@@ -24,7 +24,7 @@ export default function Product() {
     }
 
     function getProductList(){
-      get(endpoint).then(response => {
+      getWithAuth(endpoint + `/admin`).then(response => {
           if (response.status === 200) {
             setProductList(response.data);
           }

@@ -5,6 +5,7 @@ import HomePage from "./page/HomePage"
 import Help from "./page/Help"
 import AboutUs from "./page/About_Us"
 import AdminPage from "./page/Admin"
+import ProductShowcase from "./page/ProductShowcase"
 import NavBar from "./components/NavBar"
 import PrivateAdminRoute from "./components/PrivateRoute/PrivateAdminRoute"
 import {getCookie} from "./service/Cookie"
@@ -33,12 +34,15 @@ export default function App() {
           <NavBar isLogin={loginStatus} onLogin={(e) => handleLogIn(e)} onLogout={(e) => handleLogOut(e)}/>
         </div>
         <div className="main-content">
-          <Switch>
+          <Route path="/product/:pname" component={ProductShowcase}/>
+          {/*<Switch>
             <Route path='/' exact component={HomePage}/>
             <Route path='/help' exact component={Help}/>
+            <Route path="/product/:pname" component={ProductShowcase}/>
             <Route path='/about_us' exact component={AboutUs}/>
+            <Route path='/admin' exact component={AdminPage}/>
             <PrivateAdminRoute exact path="/admin" component={AdminPage}/>
-          </Switch>
+          </Switch>*/}
         </div>
       </BrowserRouter>
     </div>

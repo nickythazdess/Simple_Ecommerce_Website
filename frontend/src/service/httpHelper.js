@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getCookie } from "./Cookie";
 const endpoint = "http://localhost:8080/api";
-//const token = getCookie("token");
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYyNzQwMzM1NSwiZXhwIjoxNjI3NDg5NzU1fQ.4YKfsG5L4MmRrcyrxb69Ad91M4JcSeHidCQlP-kDrz_XPld9oglaihiUPQ14jXixEoh1i1Wjr_HQbRwQi7_fJA";
+const token = getCookie("token");
 
 export function get(url) {
   return axios.get(endpoint + url, {
@@ -12,13 +11,22 @@ export function get(url) {
   });
 }
 
-export function getWithAuth(url, body) {
+export function getWithAuth(url) {
   return axios.get(endpoint + url, {
     headers: { 
       Authorization: `Bearer ${token}`,
       "Access-Control-Allow-Origin": "*",
       'Content-Type': 'application/json; charset=utf-8',
     },
+  });
+}
+
+export function getWithParam(url, param) {
+  return axios.get(endpoint + url, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    params: param,
   });
 }
 

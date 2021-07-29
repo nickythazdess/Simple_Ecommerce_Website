@@ -11,7 +11,6 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String dev;
-    private double avg_rate;
     private float price;
     private String category_name;
     private Image img_id;
@@ -24,7 +23,6 @@ public class ProductDTO {
         this.id = id;
         this.name = name;
         this.dev = dev;
-        this.avg_rate = avg_rate;
         this.price = price;
         this.category_name = category_name;
         this.img_id = img_id;

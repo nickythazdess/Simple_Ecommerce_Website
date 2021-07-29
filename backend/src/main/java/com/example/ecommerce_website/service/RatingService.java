@@ -1,12 +1,12 @@
 package com.example.ecommerce_website.service;
 
+import com.example.ecommerce_website.displayDTO.RatingDisplay;
 import com.example.ecommerce_website.dto.RatingDTO;
+import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.entity.Rating;
-import com.example.ecommerce_website.entity.RatingID;
 import com.example.ecommerce_website.repository.RatingRepository;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface RatingService {
@@ -17,6 +17,8 @@ public interface RatingService {
     List<Rating> getUserRating(Long uid);
 
     List<Rating> getProductRating(Long pid);
+
+    float getProductAverageRating(Long pid);
 
     Rating getProductRatingOfUser(Long uid, Long pid);
 
@@ -35,4 +37,12 @@ public interface RatingService {
     List<RatingDTO> convertToDtoList(List<Rating> ratingList);
 
     Rating convertToEntity(RatingDTO ratingDTO) throws ParseException;
+
+    RatingDisplay convertToDisplay(RatingDTO dto);
+
+    RatingDisplay convertEntToDisplay(Rating rating);
+
+    List<RatingDisplay> convertToDisplayList(List<RatingDTO> dtoList);
+
+    List<RatingDisplay> convertEntToDisplayList(List<Rating> ratingList);
 }

@@ -5,9 +5,11 @@ import com.example.ecommerce_website.dto.RatingDTO;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.RatingID;
 import com.example.ecommerce_website.repository.RatingRepository;
+import com.example.ecommerce_website.service.AccountService;
 import com.example.ecommerce_website.service.RatingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -19,7 +21,9 @@ public class RatingServiceImpl implements RatingService {
     @Autowired
     private RatingRepository repo;
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
+    @Autowired
+    private AccountService accountService;
 
     public void setRatingRepo(RatingRepository repo) { this.repo = repo; }
 
@@ -28,6 +32,17 @@ public class RatingServiceImpl implements RatingService {
     public List<Rating> getUserRating(Long uid) { return this.repo.findAllById_Uid(uid); }
 
     public List<Rating> getProductRating(Long pid) { return repo.findAllById_Pid(pid); }
+
+    public float getProductAverageRating(Long pid) {
+        List<Rating> list = repo.findAllById_Pid(pid);
+        int total = list.size();
+        if (total == 0) return 0;
+        long sum = 0;
+        for (Rating rate : list) {
+            sum += rate.getRate();
+        }
+        return sum/total;
+    }
 
     public Rating getProductRatingOfUser(Long uid, Long pid) { return repo.findById(new RatingID(uid, pid)).get(); }
 
@@ -64,6 +79,7 @@ public class RatingServiceImpl implements RatingService {
 
     public RatingDisplay convertToDisplay(RatingDTO dto){
         RatingDisplay ratingDisplay = modelMapper.map(dto, RatingDisplay.class);
+        ratingDisplay.setUsername(accountService.getAccount(dto.getUid()).get().getUsername());
         return ratingDisplay;
     }
 
@@ -71,6 +87,21 @@ public class RatingServiceImpl implements RatingService {
         List<RatingDisplay> displayList = new ArrayList<>();
         for (RatingDTO dto : dtoList) {
             displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
+    }
+
+
+    public RatingDisplay convertEntToDisplay(Rating rating) {
+        RatingDisplay ratingDisplay = modelMapper.map(rating, RatingDisplay.class);
+        ratingDisplay.setUsername(accountService.getAccount(rating.getId().getUid()).get().getUsername());
+        return ratingDisplay;
+    }
+
+    public List<RatingDisplay> convertEntToDisplayList(List<Rating> ratingList) {
+        List<RatingDisplay> displayList = new ArrayList<>();
+        for (Rating rating : ratingList) {
+            displayList.add(convertEntToDisplay(rating));
         }
         return displayList;
     }

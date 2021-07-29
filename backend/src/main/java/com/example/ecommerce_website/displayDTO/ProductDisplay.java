@@ -8,7 +8,8 @@ public class ProductDisplay {
     private String name;
     private String dev;
     private float price;
-    private double avg_rate;
+    private String category;
+    private float avg_rate;
     private String img;
     private String description;
 }

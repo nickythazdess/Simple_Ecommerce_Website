@@ -36,6 +36,8 @@ public class ProductServiceImpl implements ProductService {
 
     public Product getProductByName(String name) { return repo.findProductByName(name); }
 
+    public List<Product> searchProductByName(String name) { return repo.findByNameContainingIgnoreCase(name); }
+
     public Product getProductByDev(String dev) { return repo.findProductByDev(dev); }
 
     public List<Product> getProductsByCategory(String category_name) { return repo.findAllByCategory_name(category_name); }
@@ -77,7 +79,8 @@ public class ProductServiceImpl implements ProductService {
 
     public ProductDisplay convertToDisplay(ProductDTO dto){
         ProductDisplay productDisplay = modelMapper.map(dto, ProductDisplay.class);
-        productDisplay.setImg(dto.getImg_id().getData());
+        if (dto.getImg_id() != null) productDisplay.setImg(dto.getImg_id().getData());
+        productDisplay.setCategory(dto.getCategory_name());
         return productDisplay;
     }
 
@@ -85,6 +88,23 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDisplay> displayList = new ArrayList<>();
         for (ProductDTO dto : dtoList) {
             displayList.add(convertToDisplay(dto));
+        }
+        return displayList;
+    }
+
+
+    public ProductDisplay convertEntToDisplay(Product product) {
+        ProductDisplay productDisplay = modelMapper.map(product, ProductDisplay.class);
+        if (product.getImg() != null) productDisplay.setImg(product.getImg().getData());
+        productDisplay.setCategory(product.getCategory().getName());
+        productDisplay.setAvg_rate(ratingService.getProductAverageRating(product.getId()));
+        return productDisplay;
+    }
+
+    public List<ProductDisplay> convertEntToDisplayList(List<Product> productList) {
+        List<ProductDisplay> displayList = new ArrayList<>();
+        for (Product product : productList) {
+            displayList.add(convertEntToDisplay(product));
         }
         return displayList;
     }
