@@ -56,7 +56,8 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setCategory_name(product.getCategory().getName());
         productDTO.setImg_id(product.getImg());
-        ratingService.getProductRating(product.getId());
+        productDTO.setAvg_rate(ratingService.getProductAverageRating(product.getId()));
+        productDTO.setTotal(ratingService.getProductTotalNoRating(product.getId()));
         return productDTO;
     }
 
@@ -81,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDisplay productDisplay = modelMapper.map(dto, ProductDisplay.class);
         if (dto.getImg_id() != null) productDisplay.setImg(dto.getImg_id().getData());
         productDisplay.setCategory(dto.getCategory_name());
+        productDisplay.setTotal(ratingService.getProductTotalNoRating(dto.getId()));
         return productDisplay;
     }
 
@@ -92,12 +94,12 @@ public class ProductServiceImpl implements ProductService {
         return displayList;
     }
 
-
     public ProductDisplay convertEntToDisplay(Product product) {
         ProductDisplay productDisplay = modelMapper.map(product, ProductDisplay.class);
         if (product.getImg() != null) productDisplay.setImg(product.getImg().getData());
         productDisplay.setCategory(product.getCategory().getName());
         productDisplay.setAvg_rate(ratingService.getProductAverageRating(product.getId()));
+        productDisplay.setTotal(ratingService.getProductTotalNoRating(product.getId()));
         return productDisplay;
     }
 

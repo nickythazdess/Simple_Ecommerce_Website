@@ -17,7 +17,10 @@ const SignInModal = (props) => {
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
   const [signOption, setSignOption] = useState(true);
-  const toggleSignOption = () => setSignOption(!signOption);
+  const toggleSignOption = () => {
+    setSignOption(!signOption);
+    setShowPassword(false);
+  }
 
   const signUpHandle = (e) => {
       e.preventDefault();
@@ -26,6 +29,7 @@ const SignInModal = (props) => {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 3000,
         });
+        return;
       }
       const body = JSON.stringify({
         id: 0,

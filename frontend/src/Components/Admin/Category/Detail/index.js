@@ -3,7 +3,7 @@ import {Form, FormGroup, Label, Input, FormText, Button} from 'reactstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { del, put } from "../../../../service/httpHelper";
+import { del, put, get } from "../../../../service/httpHelper";
 import CustomModal from "../../../Utils/CustomModal";
 
 toast.configure()
@@ -76,6 +76,13 @@ export default function Detail({category, update}) {
             </FormGroup>
         </Form>
 
+    const deleteForm =
+        <>
+            <h5>Are you sure?</h5>
+            <h5>You will also delete it's products!</h5>
+        </> 
+
+
     return (
         <>
             <td>{category.id}</td>
@@ -94,7 +101,7 @@ export default function Detail({category, update}) {
                     btnColor = "danger"
                     modalClassName = "cusmodal-delete"
                     title = {`Delete Category ${category.name}`}
-                    body = {<h5>Are you sure?</h5>}
+                    body = {deleteForm}
                     confirmBtn = {<Button color="danger" onClick={(e) => confirmDelete(category.id)}>Confirm</Button>}>
                 </CustomModal>
             </td>

@@ -33,6 +33,8 @@ public class RatingServiceImpl implements RatingService {
 
     public List<Rating> getProductRating(Long pid) { return repo.findAllById_Pid(pid); }
 
+    public long getProductTotalNoRating(Long pid) { return repo.countById_Pid(pid); }
+
     public float getProductAverageRating(Long pid) {
         List<Rating> list = repo.findAllById_Pid(pid);
         int total = list.size();
@@ -90,7 +92,6 @@ public class RatingServiceImpl implements RatingService {
         }
         return displayList;
     }
-
 
     public RatingDisplay convertEntToDisplay(Rating rating) {
         RatingDisplay ratingDisplay = modelMapper.map(rating, RatingDisplay.class);

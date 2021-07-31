@@ -18,6 +18,8 @@ public interface RatingService {
 
     List<Rating> getProductRating(Long pid);
 
+    long getProductTotalNoRating(Long pid);
+
     float getProductAverageRating(Long pid);
 
     Rating getProductRatingOfUser(Long uid, Long pid);

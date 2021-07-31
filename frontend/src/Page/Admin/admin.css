@@ -35,3 +35,9 @@
     margin: 10px 0px;
     border-bottom: solid 2px #3D3D3D;
 }
+
+.admin-background {
+    background-color: white;
+    height:100vh;
+    color: black;
+}

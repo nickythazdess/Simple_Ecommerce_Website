@@ -15,6 +15,8 @@ public class ProductDTO {
     private String category_name;
     private Image img_id;
     private String description;
+    private float avg_rate;
+    private long total;
     private LocalDate createdDate;
     private LocalDate updatedDate;
     public ProductDTO() {}

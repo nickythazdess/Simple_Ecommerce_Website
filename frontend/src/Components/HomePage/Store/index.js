@@ -4,6 +4,7 @@ import { Row, Col, Table } from "reactstrap";
 import {AnotherSideBar} from '../../SideBar'
 import { get } from "../../../service/httpHelper";
 import Paging from "../../Utils/Pagination";
+import Detail from "./DetailCard";
 import CustomDropdownButton from "../../Utils/CustomDropDownButton";
 
 import './store.css';
@@ -60,16 +61,15 @@ export default function Store() {
     useEffect(() => {}, [sortOption, productList]);
 
     function sortList() {
-    let sortedList = cateList.sort(compare);
-    if (!sortOption[1]) sortedList.reverse();
-    return sortedList;
+        let sortedList = productList.sort(compare);
+        if (!sortOption[1]) sortedList.reverse();
+        return sortedList;
     }
 
     const handleSortOptionChange = (item, order) => {
         setSortOption([item, order]);
     }
 
-    React.render(<Store/>, document.getElementById('star-rating'));
     return (
         <Row className="store-background">
             <Col className="col-xl-2 store-sidebar">
@@ -83,7 +83,15 @@ export default function Store() {
                 sendChoice = {(item, order) => handleSortOptionChange(item, order)}/>
                 
                 <div className="product-list-container">
-                
+                    <Row className="product-row mb-3">
+                        {!productList ? <h2>Loading...</h2> :
+                            sortList().map((product) => (
+                                <Col key={product.id} className="col-4">
+                                    <Detail key={product.id} product={product}/>
+                                </Col>
+                            ))
+                        }
+                    </Row>
                 </div>
 
                 <Paging list = {cateList}

@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
-import {Button, ButtonDropdown, DropdownToggle, DropdownMenu} from 'reactstrap';
+import {Button, ButtonDropdown, DropdownToggle, DropdownMenu, 
+    Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { getCookie } from "../../service/Cookie";
 import { isAdmin } from '../../service/Authen';
-import { post } from "../../service/httpHelper";
-import CustomModal from '../Utils/CustomModal';
+import { postWithAuth } from "../../service/httpHelper";
 import SignInModal from './SignInModal'
 import './navbar.css';
 
@@ -15,9 +15,12 @@ import './navbar.css';
 toast.configure()
 export default function NavBar({isLogin, onLogin, onLogout}) {
     const [username, setUsername] = useState(getCookie("name"));
-    const [dropdownOpen, setOpen] = useState(false);
     const [Admin, setAdmin] = useState(isAdmin());
-    const toggle = () => setOpen(!dropdownOpen);
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const toggleDrop = () => setDropdownOpen(!dropdownOpen);
+    const [modalOpen, setModalOpen] = useState(false);
+    const toggleModal = () => setModalOpen(!modalOpen);
 
     useEffect(() => {}, [username])
 
@@ -28,20 +31,18 @@ export default function NavBar({isLogin, onLogin, onLogout}) {
     }
 
     const handleLogout = () => {
-        console.log("at navbar");
-        post(`/auth/signin`, null).then((response) => {
+        postWithAuth(`/auth/signout`).then((response) => {
         if (response.status === 200) {
             toast.success("Logout succeeded! See you again mate! ❤️", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
             });
-            document.cookie = `token=; max-age=86400; path=/;`;
-            document.cookie = `name=; max-age=86400; path=/;`;
-            document.cookie = `username=; max-age=86400; path=/;`;
-            document.cookie = `email=; max-age=86400; path=/;`;
-            document.cookie = `role=; max-age=86400; path=/;`;
-            document.cookie = `cart=; max-age=86400; path=/;`;
-            document.cookie = `status=false; max-age=86400; path=/;`;
+            document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `status=false; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
             setUsername(getCookie("name"));
             setAdmin(false);
             onLogout();
@@ -86,20 +87,23 @@ export default function NavBar({isLogin, onLogin, onLogout}) {
                 }
             </ul>
             <div className="nav-details">
-                {isLogin ? 
-                    <ButtonDropdown direction="left" isOpen={dropdownOpen} toggle={toggle}>
-                        <DropdownToggle caret> {username} </DropdownToggle>
-                        <DropdownMenu>
-                            <CustomModal
-                                buttonLabel = "Log Out"
-                                btnColor = "dark"
-                                modalClassName = "cusmodal-logout"
-                                title = {`LOG OUT`}
-                                body = {<h5>Are you sure mate ???</h5>}
-                                confirmBtn = {<Button color="danger" onClick={()=>handleLogout()}>Log Out</Button>}>
-                            </CustomModal>
-                        </DropdownMenu>
-                    </ButtonDropdown>
+                {isLogin ?
+                    <>
+                        <ButtonDropdown direction="left" isOpen={dropdownOpen} toggle={toggleDrop}>
+                            <DropdownToggle caret> {username} </DropdownToggle>
+                            <DropdownMenu>
+                                <Button className="toggle-button text-center" color="dark" onClick={toggleModal}>Log out</Button>
+                            </DropdownMenu>
+                        </ButtonDropdown>
+                        <Modal isOpen={modalOpen} backdrop={true} toggle={toggleModal} className={"cusmodal-logout" + " modal-dialog-centered"}>
+                            <ModalHeader toggle={toggleModal}>LOG OUT</ModalHeader>
+                            <ModalBody>Do you really want to log out?</ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" onClick={() => handleLogout()}>Confirm</Button>
+                                <Button color="secondary" onClick={() => toggleModal()}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                    </>
                     :
                     <SignInModal signInButton="Sign In" onLogIn={() => handleLogin()}/>
                 }

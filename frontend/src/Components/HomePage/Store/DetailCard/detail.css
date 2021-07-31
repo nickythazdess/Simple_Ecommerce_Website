@@ -1,3 +1,23 @@
-a {
-    text-decoration: none; 
+.product-card {
+    margin: 10px 0px;
+    box-shadow: 2px 2px 8px #DFDFDF !important;
+    background-color: #202020 !important;
+}
+
+.product-card a {
+    text-decoration: none !important;
+    color: white !important;
+}
+
+.product-card .card-price-and-rate {
+    display: inline-block;
+}
+
+.product-card .card-rate {
+    float: right;
+}
+
+.card-subtitle, .card-title {
+    text-decoration: none !important;
+    color: white !important;
 }

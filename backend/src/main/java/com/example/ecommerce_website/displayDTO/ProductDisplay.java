@@ -10,6 +10,7 @@ public class ProductDisplay {
     private float price;
     private String category;
     private float avg_rate;
+    private long total;
     private String img;
     private String description;
 }

@@ -44,11 +44,14 @@ public class RatingController {
         return ResponseEntity.ok().body(ratingService.getProductAverageRating(pid));
     }
 
-    @GetMapping("/user/{pid}")
+    @GetMapping("/{pid}")
     public ResponseEntity<?> getProductRatingOfUSer(@PathVariable Long pid) {
         if (productService.getProduct(pid).isEmpty()) throw new ProductNotFoundException(pid);
+        System.out.println(pid);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth);
         UserDetailsImpl userDetails = ((UserDetailsImpl)auth.getPrincipal());
+        System.out.println(userDetails);
         return ResponseEntity.ok().body(ratingService.convertToDto(ratingService.getProductRatingOfUser(userDetails.getId(), pid)));
     }
 
@@ -95,7 +98,7 @@ public class RatingController {
 
     // Admin space
 
-    @GetMapping("/admin/all")
+    @GetMapping("/admin")
     public ResponseEntity<?> getRatingList(){
         return ResponseEntity.ok().body(ratingService.convertToDtoList(ratingService.getRatingList()));
     }

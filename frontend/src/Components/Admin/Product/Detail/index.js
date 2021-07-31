@@ -33,6 +33,7 @@ export default function Detail({product, update}) {
 
     const confirmEdit = (e, id) => {
         e.preventDefault();
+        console.log(e);
         const body = JSON.stringify({
             id: id,
             name: e.target.name.value,
@@ -41,7 +42,7 @@ export default function Detail({product, update}) {
             description: e.target.description.value,
             createdDate: null,
             updatedDate: null,
-            img: e.target.img.value
+            img: null
         });
         put(endpoint + `/admin`, body)
         .then((response) => {

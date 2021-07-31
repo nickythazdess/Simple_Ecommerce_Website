@@ -129,13 +129,12 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/auth/signout")
+    @PostMapping("/signout")
     public String logOut(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         String[] arrStr = token.split(" ");
         token = arrStr[1];
         jwtUtils.refreshToken(token);
         return "SUCCESS";
-
     }
 }

@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -65,7 +62,7 @@ public class ProductController {
         if (product == null) {
             throw new ProductNotFoundException(name);
         }
-        return ResponseEntity.ok().body(productService.convertEntToDisplay(product));
+        return ResponseEntity.ok().body(productService.convertToDto(product));
     }
 
     @GetMapping("/search/{name}")
@@ -80,8 +77,6 @@ public class ProductController {
     }
 
     // Admin space
-
-
 
     @GetMapping("/admin/{id}")
     public ResponseEntity<?> adminGetProduct(@PathVariable Long id) {
@@ -115,7 +110,7 @@ public class ProductController {
             throw new ProductExistedException(productDTO.getName());
         productDTO.setCreatedDate(LocalDate.now());
         productDTO.setUpdatedDate(LocalDate.now());
-        if (!file.isEmpty()) try {
+        if (!Objects.isNull(file)) try {
             Image image = new Image(Base64.getEncoder().encodeToString(file.getBytes()), productDTO.getName(), file.getContentType(), file.getSize());
             imageService.saveImage(image);
             productDTO.setImg_id(image);
@@ -134,14 +129,14 @@ public class ProductController {
         if (!productTemp.isPresent()) throw new ProductNotFoundException(productUpdate.getId());
         Product product = productTemp.get();
 
-        if (!productUpdate.getName().isEmpty()) product.setName(productUpdate.getName());
-        if (!productUpdate.getCategory_name().isEmpty()) product.setCategory(categoryService.getCategoryByName(productUpdate.getCategory_name()));
-        if (productUpdate.getPrice() >= 0) product.setPrice(productUpdate.getPrice());
-        if (!productUpdate.getDev().isEmpty()) product.setDev(productUpdate.getDev());
-        if (!productUpdate.getDescription().isEmpty()) product.setDescription(product.getDescription());
+        if (productUpdate.getName() != null) product.setName(productUpdate.getName());
+        if (!Objects.isNull(productUpdate.getCategory_name())) product.setCategory(categoryService.getCategoryByName(productUpdate.getCategory_name()));
+        if (productUpdate.getPrice() >=0) product.setPrice(productUpdate.getPrice());
+        if (!Objects.isNull(productUpdate.getDev())) product.setDev(productUpdate.getDev());
+        if (!Objects.isNull(productUpdate.getDescription())) product.setDescription(product.getDescription());
 
-        if (!file.isEmpty()) try {
-            if (product.getImg() != null) {
+        if (!Objects.isNull(file)) try {
+            if (!Objects.isNull(product.getImg())) {
                 Image image = imageService.getImageById(product.getImg().getId()).get();
                 image.setData(Base64.getEncoder().encodeToString(file.getBytes()));
                 image.setContentType(file.getContentType());
@@ -157,6 +152,7 @@ public class ProductController {
         }
 
         product.setUpdatedDate(LocalDate.now());
+        productService.updateProduct(product);
         return ResponseEntity.ok().body(productService.convertToDto(product));
     }
 

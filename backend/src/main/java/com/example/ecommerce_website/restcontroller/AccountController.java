@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -62,10 +63,10 @@ public class AccountController {
         if (!acc.isPresent()) throw new AccountNotFoundException(accountUpdate.getId());
         Account account = acc.get();
 
-        if (!accountUpdate.getName().isEmpty()) account.setName(accountUpdate.getName());
-        if (!accountUpdate.getUsername().isEmpty()) account.setUsername(accountUpdate.getUsername());
-        if (!accountUpdate.getEmail().isEmpty()) account.setEmail(accountUpdate.getEmail());
-        if (!accountUpdate.getPassword().isEmpty()) account.setPassword(encoder.encode(accountUpdate.getPassword()));
+        if (!Objects.isNull(accountUpdate.getName())) account.setName(accountUpdate.getName());
+        if (!Objects.isNull(accountUpdate.getUsername())) account.setUsername(accountUpdate.getUsername());
+        if (!Objects.isNull(accountUpdate.getEmail())) account.setEmail(accountUpdate.getEmail());
+        if (!Objects.isNull(accountUpdate.getPassword())) account.setPassword(encoder.encode(accountUpdate.getPassword()));
 
         return ResponseEntity.ok().body(accountService.updateAccount(account));
     }

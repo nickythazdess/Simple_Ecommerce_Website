@@ -1,6 +1,7 @@
 .store-background {
     background-color: #202020;
     color: #DFDFDF;
+    padding-top: 10px;
 }
 
 .store-sidebar .sidebar {
@@ -40,4 +41,9 @@
 
 .store-container {
     padding-top: 10px;
+    width: 100%;
+}
+
+.col-4, .product-list-container {
+    margin: 10px 0px;
 }
